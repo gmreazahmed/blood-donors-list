@@ -3,6 +3,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import DonorCard from "../components/DonorCard";
 import { areaData } from "../data/upazila-union";
+import MobileRegisterButton from "../components/RegBtn";
+import RegBtn from './../components/RegBtn';
 
 interface Donor {
   id: string;
@@ -54,6 +56,7 @@ export default function Home() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
+      <RegBtn />
       <h2 className="text-xl font-bold mb-4">Donor List</h2>
 
       <div className="flex flex-wrap gap-4 mb-6">
