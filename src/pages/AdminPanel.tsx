@@ -91,8 +91,8 @@ export default function AdminPanel() {
   return (
     <div className="p-4 max-w-6xl mx-auto">
       
-      <div className="mb-6  flex justify-between items-center border-b pb-4">
-        <h2 className="text-xl font-bold mb-4">এডমিন প্যানেল</h2>
+      <div className="mb-6  flex justify-between items-center pb-4">
+        <h2 className="text-xl font-bold">এডমিন প্যানেল</h2>
         <button
           onClick={() => {
             localStorage.removeItem("isAdmin");
@@ -103,10 +103,12 @@ export default function AdminPanel() {
           Sign Out
         </button>
       </div>
-      
+
       {/* নতুন ডোনার যোগ করার ফর্ম */}
-      <div className="mt-6 border-t pt-4">
-        <h3 className="font-semibold mb-2">নতুন ডোনার যোগ করুন</h3>
+      <div className="mt-4 mb-4 pt-4 ">
+        <div className="mb-4 border-b pb-2">
+          <h3 className="font-semibold mb-2">নতুন ডোনার যোগ করুন</h3>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <input
             type="text"
@@ -167,6 +169,10 @@ export default function AdminPanel() {
           নতুন ডোনার যোগ করুন
         </button>
       </div>
+      
+      <div className="mt-8 mb-4 border-b pb-4">
+        <h3 className="font-semibold mb-2">ডোনার তালিকা</h3>
+      </div>
 
       <input
         type="text"
@@ -175,7 +181,7 @@ export default function AdminPanel() {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full border px-3 py-2 mb-4 rounded"
       />
-
+      
       <table className="w-full border text-sm">
         <thead>
           <tr className="bg-gray-100 text-left">

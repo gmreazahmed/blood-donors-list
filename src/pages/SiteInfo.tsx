@@ -1,6 +1,6 @@
 export default function SiteInfo() {
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold text-red-600 mb-4">সাইট সম্পর্কে তথ্য-</h1>
 
       <p className="text-gray-800 text-lg leading-relaxed mb-4">
@@ -11,7 +11,10 @@ export default function SiteInfo() {
 
       <p className="text-gray-800 text-lg leading-relaxed mb-4">
         এই উদ্যোগের পেছনে আমরা — <br />
-        <span className="font-semibold text-red-700">জিএম রিয়াজ আহমেদ</span> এবং <span className="font-semibold text-red-700">নাসিফ উর রহমান</span>।
+        <span className="font-semibold text-red-700">জিএম রিয়াজ আহমেদ</span> এবং <br/>
+        <span className="font-semibold text-red-700">নাসিফ উর রহমান</span>। <br />
+        সার্বিক সহযোগিতায় — <br /> 
+        <span className="font-semibold text-red-700">মীর মারুফ হোসেন</span>।
       </p>
 
       <p className="text-gray-700 mt-6">আপনার সহযোগিতা আমাদের অনুপ্রেরণা।</p>
