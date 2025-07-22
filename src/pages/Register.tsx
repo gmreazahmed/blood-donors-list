@@ -2,10 +2,13 @@ import { useState } from "react";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { areaData } from "../data/upazila-union";
+import { useNavigate } from "react-router-dom";
+
 
 
 
 export default function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     bloodGroup: "",
@@ -44,6 +47,10 @@ export default function Register() {
         lastDonateDate: ""
       });
       setSuccess(true);
+      navigate("/"); 
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000); 
     } catch (error) {
       console.error("Error adding donor:", error);
     }
