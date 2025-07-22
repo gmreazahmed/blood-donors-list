@@ -8,7 +8,11 @@ export default function Navbar() {
   return (
     <nav className="bg-red-600 text-white px-4 py-3 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <Link to="/" className="text-white text-lg font-semibold">
         <h1 className="text-xl font-bold">Rokto Data</h1>
+        </Link>
+
+        {/* Logo */}
 
         {/* Mobile menu toggle */}
         <button className="md:hidden" onClick={() => setOpen(!open)}>
