@@ -6,7 +6,6 @@ import { areaData } from "../data/upazila-union";
 
 
 export default function Register() {
-  const [village, setVillage] = useState("");
   const [form, setForm] = useState({
     name: "",
     bloodGroup: "",
@@ -100,8 +99,8 @@ export default function Register() {
           value={form.village}
           onChange={handleChange}
           placeholder="Village name"
-          required
           className="border p-2 w-full rounded"
+          required
         />
 
 
