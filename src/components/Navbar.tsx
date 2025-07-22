@@ -24,6 +24,7 @@ export default function Navbar() {
           <li><Link to="/" className="block py-1">Donor List</Link></li>
           <li><Link to="/register" className="block py-1">Register</Link></li>
           <li><Link to="/siteinfo" className="block py-1">Site Info</Link></li>
+          <li><Link to="/admin" className="block py-1">Admin</Link></li>
         </ul>
       </div>
     </nav>

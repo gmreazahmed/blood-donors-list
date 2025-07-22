@@ -4,6 +4,8 @@ import Register from "./pages/Register";
 import SiteInfo from "./pages/SiteInfo";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/siteinfo" element={<SiteInfo />} />
           <Route path="*" element={<Home />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminPanel />} />
         </Routes>
       </div>
 
