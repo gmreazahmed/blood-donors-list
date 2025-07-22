@@ -103,6 +103,70 @@ export default function AdminPanel() {
           Sign Out
         </button>
       </div>
+      
+      {/* নতুন ডোনার যোগ করার ফর্ম */}
+      <div className="mt-6 border-t pt-4">
+        <h3 className="font-semibold mb-2">নতুন ডোনার যোগ করুন</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <input
+            type="text"
+            placeholder="নাম"
+            className="border p-2 rounded"
+            value={newDonor.name}
+            onChange={(e) => setNewDonor({ ...newDonor, name: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="ফোন"
+            className="border p-2 rounded"
+            value={newDonor.phone}
+            onChange={(e) => setNewDonor({ ...newDonor, phone: e.target.value })}
+          />
+          <select
+            className="border p-2 rounded"
+            value={newDonor.bloodGroup}
+            onChange={(e) => setNewDonor({ ...newDonor, bloodGroup: e.target.value })}
+          >
+            <option value="">রক্ত গ্রুপ</option>
+            {bloodGroups.map(bg => (
+              <option key={bg} value={bg}>{bg}</option>
+            ))}
+          </select>
+          <select
+            className="border p-2 rounded"
+            value={newDonor.upazila}
+            onChange={(e) => setNewDonor({ ...newDonor, upazila: e.target.value, union: "" })}
+          >
+            <option value="">উপজেলা</option>
+            {Object.keys(areaData).map(upazila => (
+              <option key={upazila} value={upazila}>{upazila}</option>
+            ))}
+          </select>
+          <select
+            className="border p-2 rounded"
+            value={newDonor.union}
+            onChange={(e) => setNewDonor({ ...newDonor, union: e.target.value })}
+          >
+            <option value="">ইউনিয়ন</option>
+            {getUnions(newDonor.upazila).map(union => (
+              <option key={union} value={union}>{union}</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="গ্রাম"
+            className="border p-2 rounded"
+            value={newDonor.village}
+            onChange={(e) => setNewDonor({ ...newDonor, village: e.target.value })}
+          />
+        </div>
+        <button
+          onClick={handleAdd}
+          className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          নতুন ডোনার যোগ করুন
+        </button>
+      </div>
 
       <input
         type="text"
@@ -210,69 +274,7 @@ export default function AdminPanel() {
         </tbody>
       </table>
 
-      {/* নতুন ডোনার যোগ করার ফর্ম */}
-      <div className="mt-6 border-t pt-4">
-        <h3 className="font-semibold mb-2">নতুন ডোনার যোগ করুন</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <input
-            type="text"
-            placeholder="নাম"
-            className="border p-2 rounded"
-            value={newDonor.name}
-            onChange={(e) => setNewDonor({ ...newDonor, name: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="ফোন"
-            className="border p-2 rounded"
-            value={newDonor.phone}
-            onChange={(e) => setNewDonor({ ...newDonor, phone: e.target.value })}
-          />
-          <select
-            className="border p-2 rounded"
-            value={newDonor.bloodGroup}
-            onChange={(e) => setNewDonor({ ...newDonor, bloodGroup: e.target.value })}
-          >
-            <option value="">রক্ত গ্রুপ</option>
-            {bloodGroups.map(bg => (
-              <option key={bg} value={bg}>{bg}</option>
-            ))}
-          </select>
-          <select
-            className="border p-2 rounded"
-            value={newDonor.upazila}
-            onChange={(e) => setNewDonor({ ...newDonor, upazila: e.target.value, union: "" })}
-          >
-            <option value="">উপজেলা</option>
-            {Object.keys(areaData).map(upazila => (
-              <option key={upazila} value={upazila}>{upazila}</option>
-            ))}
-          </select>
-          <select
-            className="border p-2 rounded"
-            value={newDonor.union}
-            onChange={(e) => setNewDonor({ ...newDonor, union: e.target.value })}
-          >
-            <option value="">ইউনিয়ন</option>
-            {getUnions(newDonor.upazila).map(union => (
-              <option key={union} value={union}>{union}</option>
-            ))}
-          </select>
-          <input
-            type="text"
-            placeholder="গ্রাম"
-            className="border p-2 rounded"
-            value={newDonor.village}
-            onChange={(e) => setNewDonor({ ...newDonor, village: e.target.value })}
-          />
-        </div>
-        <button
-          onClick={handleAdd}
-          className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          নতুন ডোনার যোগ করুন
-        </button>
-      </div>
+      
     </div>
   );
 }
