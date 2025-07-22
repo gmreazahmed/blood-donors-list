@@ -3,12 +3,16 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { areaData } from "../data/upazila-union";
 
+
+
 export default function Register() {
+  const [village, setVillage] = useState("");
   const [form, setForm] = useState({
     name: "",
     bloodGroup: "",
     upazila: "",
     union: "",
+    village: "", 
     phone: "",
     lastDonateDate: ""
   });
@@ -36,6 +40,7 @@ export default function Register() {
         bloodGroup: "",
         upazila: "",
         union: "",
+        village: "", 
         phone: "",
         lastDonateDate: ""
       });
@@ -88,6 +93,17 @@ export default function Register() {
             ))}
           </select>
         )}
+
+        <input
+          type="text"
+          name="village"
+          value={form.village}
+          onChange={handleChange}
+          placeholder="Village name"
+          required
+          className="border p-2 w-full rounded"
+        />
+
 
         <input
           type="tel"
