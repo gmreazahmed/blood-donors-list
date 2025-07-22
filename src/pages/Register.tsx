@@ -67,6 +67,7 @@ export default function Register() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <label className="block text-sm font-medium mb-1">Full Name</label>
         <input
           type="text"
           name="name"
@@ -76,14 +77,14 @@ export default function Register() {
           className="border p-2 w-full rounded"
           required
         />
-
+        <label className="block text-sm font-medium mb-1">Blood Group</label>
         <select name="bloodGroup" value={form.bloodGroup} onChange={handleChange} className="border p-2 w-full rounded" required>
           <option value="">Select Blood Group</option>
           {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(bg => (
             <option key={bg} value={bg}>{bg}</option>
           ))}
         </select>
-
+        <label className="block text-sm font-medium mb-1">Address</label>
         <select name="upazila" value={form.upazila} onChange={handleChange} className="border p-2 w-full rounded" required>
           <option value="">Select Upazila</option>
           {Object.keys(areaData).map(area => (
@@ -99,7 +100,7 @@ export default function Register() {
             ))}
           </select>
         )}
-
+       
         <input
           type="text"
           name="village"
@@ -110,7 +111,7 @@ export default function Register() {
           required
         />
 
-
+        <label className="block text-sm font-medium mb-1">Phone Number</label>
         <input
           type="tel"
           name="phone"
@@ -120,7 +121,8 @@ export default function Register() {
           className="border p-2 w-full rounded"
           required
         />
-
+        <label className="block text-sm font-medium mb-1">Last Donation Date</label>
+         <small className="text-gray-500 mb-2">Optional</small>
         <input
           type="date"
           name="lastDonateDate"
