@@ -10,6 +10,7 @@ interface Donor {
   bloodGroup: string;
   upazila: string;
   union: string;
+  village: string;
   phone: string;
   lastDonateDate?: string;
 }
