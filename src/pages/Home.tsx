@@ -3,7 +3,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import DonorCard from "../components/DonorCard";
 import { areaData } from "../data/upazila-union";
-import MobileRegisterButton from "../components/RegBtn";
 import RegBtn from './../components/RegBtn';
 
 interface Donor {
