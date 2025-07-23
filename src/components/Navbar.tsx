@@ -43,9 +43,6 @@ export default function Navbar() {
             <NavItem to="/siteinfo" mobile onClick={() => setOpen(false)}>
               Site Info
             </NavItem>
-            <NavItem to="/admin" mobile onClick={() => setOpen(false)}>
-              Admin
-            </NavItem>
           </ul>
         </div>
       )}
