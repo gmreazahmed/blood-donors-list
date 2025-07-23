@@ -42,7 +42,7 @@ export default function DonorCard({ donor }: { donor: Donor }) {
     <div className="relative border rounded-xl shadow-md p-6 bg-white hover:shadow-lg transition duration-300">
       {/* Available Badge */}
       {isAvailable && (
-        <div className="absolute top-3 right-3 bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded">
+        <div className="absolute top-3 right-3 text-green-700 text-xs font-semibold px-2 py-1 rounded">
           🟢 Available
         </div>
       )}
