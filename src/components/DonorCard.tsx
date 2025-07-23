@@ -36,17 +36,11 @@ export default function DonorCard({ donor }: { donor: Donor }) {
     alert("সর্বশেষ রক্তদানের তারিখ আপডেট হয়েছে।");
   };
 
-  const isAvailable = daysAgo !== null && daysAgo >= 90;
+  const isAvailable = daysAgo !== null && daysAgo >= 120;
 
   return (
     <div className="relative border rounded-xl shadow-md p-6 bg-white hover:shadow-lg transition duration-300">
-      {/* Available Badge */}
-      {isAvailable && (
-        <div className="absolute top-3 right-3 text-green-700 text-xs font-semibold px-2 py-1 rounded">
-          🟢 Available
-        </div>
-      )}
-
+      
       <div className="flex flex-col gap-1 mb-3">
         <h3 className="text-2xl font-bold text-gray-800">{donor.name}</h3>
         <p className="text-sm font-bold text-gray-700"><span className="font-medium">রক্তের গ্রুপ:</span> {donor.bloodGroup}</p>
@@ -82,11 +76,16 @@ export default function DonorCard({ donor }: { donor: Donor }) {
             আপডেট করুন
           </button>
         </div>
-        {daysAgo !== null && (
-          <p className="text-xs text-gray-600 mt-2">
-            সর্বশেষ রক্তদান হয়েছে <span className="font-semibold">{daysAgo}</span> দিন আগে।
-          </p>
-        )}
+          {isAvailable && (
+            <p className="text-xs text-green-600 mt-2">
+              সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে। এই ডোনার এখন রক্ত দানে প্রস্তুত।
+            </p>
+          )}
+          {!isAvailable && daysAgo !== null && (
+            <p className="text-xs text-red-600 mt-2">
+              এই ডোনার এখন রক্ত দানে প্রস্তুত নয়। সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে।
+            </p>
+          )}
       </div>
     </div>
   );
