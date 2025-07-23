@@ -4,17 +4,19 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100 border-t mt-12 text-sm text-gray-700">
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Section 1: Logo/Name */}
-        <div>
-          <h2 className="text-xl font-bold text-red-600 mb-3">Rokto Data</h2>
-          <p className="leading-relaxed">
-            We work to connect blood donors and recipients easily, quickly, and reliably in your area.
+        {/* Section 1: Logo/Info */}
+        <div className="space-y-3">
+          <h2 className="text-xl font-bold text-red-600">Rokto Data</h2>
+          <p className="leading-relaxed text-justify">
+            সাইটটি জনসেবামূলক উদ্দেশ্যে তৈরি করা হয়েছে এবং সকলের জন্য উন্মুক্ত।
+            রক্তদাতারা সহজেই তথ্য হালনাগাদ করতে পারবেন এবং প্রয়োজনকারীরা দ্রুত রক্তদাতা খুঁজে পাবেন।
+            বর্তমানে এটি সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য চালু রয়েছে।
           </p>
         </div>
 
         {/* Section 2: Quick Links */}
-        <nav aria-label="Quick Links">
-          <h3 className="font-semibold text-gray-800 mb-3">Important Links</h3>
+        <div className="space-y-3">
+          <h3 className="font-semibold text-gray-800">Important Links</h3>
           <ul className="space-y-2">
             <li>
               <Link to="/" className="hover:text-red-600 transition-colors">
@@ -37,12 +39,12 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-        </nav>
+        </div>
 
         {/* Section 3: Contact */}
-        <address className="not-italic">
-          <h3 className="font-semibold text-gray-800 mb-3">Contact</h3>
-          <ul className="space-y-2 text-sm">
+        <div className="space-y-3">
+          <h3 className="font-semibold text-gray-800">Contact</h3>
+          <ul className="space-y-2">
             <li>
               <span className="font-medium">Phone:</span>{" "}
               <a href="tel:+880123456789" className="hover:text-red-600 transition-colors">
@@ -55,7 +57,7 @@ export default function Footer() {
                 support@roktodata.com
               </a>
             </li>
-            <li className="flex gap-6 mt-3">
+            <li className="flex gap-4 mt-2">
               <a href="#" className="hover:text-red-600 transition-colors" aria-label="Facebook">
                 Facebook
               </a>
@@ -64,7 +66,7 @@ export default function Footer() {
               </a>
             </li>
           </ul>
-        </address>
+        </div>
       </div>
 
       <div className="text-center border-t py-4 text-xs text-gray-500 select-none">
