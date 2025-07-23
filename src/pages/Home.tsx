@@ -54,7 +54,7 @@ export default function Home() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      <RegBtn />
+      <RegBtn/>
 
       <h2 className="text-3xl font-semibold mb-4 text-gray-800">
         রক্ত দানকারীদের তালিকা-

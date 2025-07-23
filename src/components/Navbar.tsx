@@ -15,24 +15,24 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded cursor-pointer"
           onClick={() => setOpen(!open)}
+          aria-label={open ? "Close menu" : "Open menu"}
         >
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-6 text-sm font-medium">
+        <ul className="hidden md:flex gap-8 text-sm font-semibold">
           <NavItem to="/">Donor List</NavItem>
-          <NavItem to="/register">Register</NavItem>
+          <NavItem to="/register">Register Donor</NavItem>
           <NavItem to="/siteinfo">Site Info</NavItem>
-          <NavItem to="/admin">Admin</NavItem>
         </ul>
       </div>
 
       {/* Mobile Dropdown Menu */}
       {open && (
-        <div className="md:hidden px-4 pb-4">
+        <div className="md:hidden px-4 pb-4 bg-red-600 rounded-b shadow-lg">
           <ul className="space-y-2 text-base">
             <NavItem to="/" mobile onClick={() => setOpen(false)}>
               Donor List
@@ -65,7 +65,7 @@ function NavItem({
   onClick?: () => void;
 }) {
   const baseStyle =
-    "block px-3 py-2 rounded hover:bg-white hover:text-red-600 transition duration-200";
+    "block px-4 py-2 rounded hover:bg-white hover:text-red-600 transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
   return (
     <li>
       <Link to={to} onClick={onClick} className={baseStyle + (mobile ? " w-full" : "")}>
