@@ -17,8 +17,8 @@ type BloodRequest = {
   name: string;
   phone: string;
   bloodGroup: string;
-  hospital: string; //
-  reason: string; // 
+  hospital: string;
+  reason: string;
   fulfilled: boolean;
   createdAt: any;
 };
@@ -34,7 +34,6 @@ export default function BloodRequestPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // Fetch recent 10 requests
   const fetchRequests = async () => {
     const q = query(collection(db, "bloodRequests"), orderBy("createdAt", "desc"), limit(10));
     const snapshot = await getDocs(q);
@@ -49,18 +48,17 @@ export default function BloodRequestPage() {
     fetchRequests();
   }, []);
 
-  // Handle "Solve" button click
   const handleSolve = async (id: string) => {
     await updateDoc(doc(db, "bloodRequests", id), { fulfilled: true });
     fetchRequests();
   };
 
-  // Handle form input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { name, phone, bloodGroup, hospital, reason } = form;
@@ -68,6 +66,7 @@ export default function BloodRequestPage() {
       alert("অনুগ্রহ করে সব তথ্য পূরণ করুন।");
       return;
     }
+
     setLoading(true);
     try {
       await addDoc(collection(db, "bloodRequests"), {
@@ -87,59 +86,52 @@ export default function BloodRequestPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold text-red-600 mb-6 text-center">রক্তের অনুরোধসমূহ</h2>
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 min-h-screen">
+      <h2 className="text-3xl font-bold text-center text-red-600 mb-8">
+        রক্তের অনুরোধসমূহ
+      </h2>
 
       {/* Request List */}
-      <div className="space-y-6 mb-10">
+      <div className="space-y-6 mb-12">
         {requests.length === 0 && (
-          <p className="text-center text-gray-500 mt-10">কোনো রক্তের অনুরোধ পাওয়া যায়নি।</p>
+          <p className="text-center text-gray-500">কোনো রক্তের অনুরোধ পাওয়া যায়নি।</p>
         )}
-
         {requests.map((req) => (
           <div
             key={req.id}
-            className={`border rounded-lg shadow-md p-5 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4`}
+            className="bg-white border rounded-xl shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
           >
-            <div className="flex flex-col space-y-1 max-w-md">
-              <h3 className="text-xl font-semibold text-red-600">{req.name}</h3>
-              <p className="text-gray-700 text-sm flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-blue-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-red-600">{req.name}</h3>
+              <p className="text-sm text-gray-700">
+                📞{" "}
+                <a
+                  href={`tel:${req.phone}`}
+                  className="text-blue-600 hover:underline font-medium"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h1l2 7h13l2-7h1" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10V7a2 2 0 012-2h10a2 2 0 012 2v3" />
-                </svg>
-                <a href={`tel:${req.phone}`} className="hover:underline font-medium text-blue-700">
                   {req.phone}
                 </a>
               </p>
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">রক্তের গ্রুপ: </span>{req.bloodGroup}
+              <p className="text-sm text-gray-700">
+                🩸 <span className="font-medium">গ্রুপ:</span> {req.bloodGroup}
               </p>
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">হাসপাতাল/ক্লিনিক: </span>{req.hospital}
+              <p className="text-sm text-gray-700">
+                🏥 <span className="font-medium">হাসপাতাল:</span> {req.hospital}
               </p>
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">রোগীর সমস্যা: </span>{req.reason}
+              <p className="text-sm text-gray-700">
+                📝 <span className="font-medium">কারণ:</span> {req.reason}
               </p>
             </div>
-
-            <div className="flex flex-col justify-center items-center">
+            <div>
               {!req.fulfilled ? (
                 <button
                   onClick={() => handleSolve(req.id)}
-                  className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md shadow-md transition"
+                  className="px-5 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition"
                 >
                   Solve
                 </button>
               ) : (
-                <span className="text-gray-500 font-semibold px-4 py-2 border border-gray-300 rounded-md select-none">
+                <span className="px-4 py-2 rounded-md text-xs bg-gray-100 text-gray-600 border border-gray-300">
                   Fulfilled
                 </span>
               )}
@@ -149,16 +141,18 @@ export default function BloodRequestPage() {
       </div>
 
       {/* Request Form */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold text-red-600 mb-4 text-center">নতুন রক্তের অনুরোধ পাঠান</h3>
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
+      <div className="bg-white rounded-xl shadow-md p-6 sm:p-8">
+        <h3 className="text-xl font-semibold text-center text-red-600 mb-6">
+          নতুন রক্তের অনুরোধ পাঠান
+        </h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             name="name"
             value={form.name}
             onChange={handleChange}
             placeholder="আপনার নাম"
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
           <input
@@ -167,19 +161,21 @@ export default function BloodRequestPage() {
             value={form.phone}
             onChange={handleChange}
             placeholder="ফোন নম্বর"
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
           <select
             name="bloodGroup"
             value={form.bloodGroup}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           >
             <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
             {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-              <option key={bg} value={bg}>{bg}</option>
+              <option key={bg} value={bg}>
+                {bg}
+              </option>
             ))}
           </select>
           <input
@@ -188,7 +184,7 @@ export default function BloodRequestPage() {
             value={form.hospital}
             onChange={handleChange}
             placeholder="হাসপাতাল/ক্লিনিক"
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
           <textarea
@@ -196,14 +192,14 @@ export default function BloodRequestPage() {
             value={form.reason}
             onChange={handleChange}
             placeholder="রোগীর সমস্যা / প্রয়োজন"
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             rows={3}
             required
-          />
+          ></textarea>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md font-semibold transition"
           >
             {loading ? "অনুরোধ প্রেরণ হচ্ছে..." : "অনুরোধ পাঠান"}
           </button>
