@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Section 1: Logo/Name */}
         <div>
-          <h2 className="text-xl font-bold text-red-600 mb-2">রক্ত ডেটা</h2>
+          <h2 className="text-xl font-bold text-red-600 mb-2">Rokto Data</h2>
           <p className="text-sm leading-relaxed">
             আপনার এলাকায় সহজে, দ্রুত ও নির্ভরযোগ্যভাবে রক্তদাতা ও প্রাপককে সংযুক্ত করতে আমরা কাজ করি।
           </p>
