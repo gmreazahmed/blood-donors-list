@@ -38,7 +38,7 @@ export default function Navbar() {
               Donor List
             </NavItem>
             <NavItem to="/register" mobile onClick={() => setOpen(false)}>
-              Register
+              Register Donar
             </NavItem>
             <NavItem to="/siteinfo" mobile onClick={() => setOpen(false)}>
               Site Info
