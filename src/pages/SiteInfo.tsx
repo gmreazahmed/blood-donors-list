@@ -6,23 +6,23 @@ export default function SiteInfo() {
       <p className="text-gray-800 text-lg leading-relaxed mb-6">
         এই ওয়েবসাইটটি জনসেবামূলক উদ্দেশ্যে তৈরি করা হয়েছে।  
         আমরা বিশ্বাস করি, রক্তদানের মাধ্যমে অনেক মানুষের জীবন রক্ষা ও বাঁচানো সম্ভব।  
-        তাই এই প্ল্যাটফর্মটি সকলের জন্য উন্মুক্ত, এবং সবাইকে সতর্ক করা হচ্ছে সঠিক তথ্য প্রদান করতে, কারণ এটি সবার কল্যাণের জন্য।
+        তাই এই প্ল্যাটফর্মটি সকলের জন্য উন্মুক্ত, এবং সবাইকে অনুরোধ করা হচ্ছে সঠিক তথ্য প্রদান করতে — কারণ এটি সবার কল্যাণের জন্য।
       </p>
 
       <p className="text-gray-700 text-base mb-6">
         বর্তমানে সাইটটি সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য তৈরি করা হয়েছে। <br />
-        ভবিষ্যতে অন্যান্য উপজেলা ও অঞ্চলেও এই সেবাটি সম্প্রসারণের পরিকল্পনা রয়েছে, যেখানে ব্লাড ফাউন্ডেশনের সহযোগিতা পাওয়া গেলে দ্রুত চালু করা হবে।  
+        ভবিষ্যতে অন্যান্য উপজেলা ও অঞ্চলেও এই সেবাটি সম্প্রসারণের পরিকল্পনা রয়েছে।  
+        যেখানে ব্লাড ফাউন্ডেশনের সহযোগিতা পাওয়া গেলে দ্রুত তা চালু করা হবে।
       </p>
 
       <p className="text-gray-700 text-base mb-6">
-        এই সাইটের মাধ্যমে রক্তদাতারা তাদের তথ্য আপডেট করতে পারবেন, এবং রক্তপ্রয়োজনকারীরা সহজেই তাদের প্রয়োজনীয় রক্তদাতাদের খুঁজে পেতে পারবেন।  
-        এছাড়া, সাইটে রক্তদাতাদের সর্বশেষ রক্তদান তারিখও উল্লেখ করা হয়েছে, যাতে রক্তদাতাদের প্রস্তুতির অবস্থা জানা যায়।
+        এই সাইটের মাধ্যমে রক্তদাতারা তাদের তথ্য আপডেট করতে পারবেন এবং রক্তপ্রয়োজনকারীরা সহজেই প্রয়োজনীয় রক্তদাতাদের খুঁজে পেতে পারবেন।  
+        এছাড়া সর্বশেষ রক্তদানের তারিখও উল্লেখ থাকায় রক্তদাতার প্রস্তুতির বিষয়েও ধারণা পাওয়া যায়।
       </p>
 
       <p className="text-gray-700 text-lg font-semibold mb-2">
-        তথ্য দিয়ে সার্বিক সহযোগিতায় এসব ব্লাড ডোনেট ফাউন্ডেশন:
+        তথ্য দিয়ে সার্বিক সহযোগিতায় ছিল যেসব ব্লাড ডোনেট ফাউন্ডেশন:
       </p>
-
       <ul className="list-disc list-inside text-gray-800 text-base space-y-2 mb-6">
         <li>আমার ব্লাড ডোনেট ফাউন্ডেশন</li>
         <li>ব্লাড ডোনেট ফাউন্ডেশন</li>
@@ -30,38 +30,35 @@ export default function SiteInfo() {
 
       <p className="text-gray-700 text-base mb-6">
         আপনার সহযোগিতা আমাদের জন্য অত্যন্ত মূল্যবান এবং এটি আমাদের কাজ চালিয়ে যাওয়ার অনুপ্রেরণা দেয়।  
-        আসুন, সবাই মিলে “রক্ত দেই, জীবন বাঁচাই” এর উদ্দেশ্যকে সফল করি।
+        আসুন, সবাই মিলে “রক্ত দেই, জীবন বাঁচাই” এই উদ্দেশ্যকে সফল করি।
       </p>
 
       <p className="text-gray-800 text-base leading-relaxed mb-6">
-        এই উদ্যোগের পেছনে এবং ওয়েব অ্যাপ্লিকেশনটি ডেভেলপমেন্ট করেছেন — <br />
+        এই উদ্যোগের পেছনে ও ওয়েব অ্যাপ্লিকেশনটি ডেভেলপ করেছেন — <br />
         <span className="font-semibold text-red-700">জিএম রিয়াজ আহমেদ</span>, <br />
         <span className="font-semibold text-red-700">নাসিফ উর রহমান</span>, <br />
         এবং সার্বিক সহযোগিতায় — <br />
         <span className="font-semibold text-red-700">মীর মারুফ হোসেন</span>।
       </p>
 
-      <p className="text-gray-700 mb-8">আপনার সহযোগিতা আমাদের অনুপ্রেরণা।</p>
+      {/* যোগাযোগ */}
+      <div className="border-t pt-6 mt-6">
+        <h2 className="text-xl font-semibold text-red-600 mb-3">যোগাযোগ-</h2>
+        <p className="text-gray-700 text-base mb-3">
+          যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের সাথে যোগাযোগ করুন।
+        </p>
 
-      {/* New Contact Section */}
-        
-          <div className="border-t pt-6 mt-6">
-  
-            <p className="text-gray-700 text-lg font-bold mb-3">
-              ভুল তথ্য এবং কোন পরামর্শ থাকলে যোগাযোগ করুন-
-            </p>
-            <a
-              href="https://wa.me/message/MF2BRS2I5NILM1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded transition"
-            >
-              WhatsApp
-            </a>
-          </div>
-
-
-      
+        <div className="flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://wa.me/message/MF2BRS2I5NILM1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded transition"
+          >
+            WhatsApp এ যোগাযোগ করুন
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
