@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://blood-donors-list.vercel.app/sitemap.xml
