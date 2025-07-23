@@ -26,6 +26,7 @@ export default function Navbar() {
         <ul className="hidden md:flex gap-8 text-sm font-semibold">
           <NavItem to="/">Donor List</NavItem>
           <NavItem to="/register">Register Donor</NavItem>
+          <NavItem to="/blood-request">Request Blood</NavItem>
           <NavItem to="/siteinfo">Site Info</NavItem>
         </ul>
       </div>
@@ -39,6 +40,9 @@ export default function Navbar() {
             </NavItem>
             <NavItem to="/register" mobile onClick={() => setOpen(false)}>
               Register Donar
+            </NavItem>
+            <NavItem to="/blood-request" mobile onClick={() => setOpen(false)}>
+              Request Blood
             </NavItem>
             <NavItem to="/siteinfo" mobile onClick={() => setOpen(false)}>
               Site Info
