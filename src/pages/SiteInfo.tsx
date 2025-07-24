@@ -42,22 +42,11 @@ export default function SiteInfo() {
       </p>
 
       {/* যোগাযোগ */}
-      <div className="border-t pt-6 mt-6">
-        <h2 className="text-xl font-semibold text-red-600 mb-3">যোগাযোগ-</h2>
-        <p className="text-gray-700 text-base mb-3">
-          যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের সাথে যোগাযোগ করুন।
+      <div className="border-t pt-6 mt-6 items-center text-center">
+        <p className="text-red-500 text-base mb-3">
+          *যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের পরামর্শ বক্সে জানান।*
         </p>
-
-        <div className="flex flex-col sm:flex-row gap-4">
-          <a
-            href="https://wa.me/message/MF2BRS2I5NILM1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded transition"
-          >
-            WhatsApp এ যোগাযোগ করুন
-          </a>
-        </div>
+        
       </div>
     </div>
   );

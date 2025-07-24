@@ -192,6 +192,10 @@ export default function Register() {
           নিবন্ধন করুন
         </button>
       </form>
+
+      <p className="text-red-600 mt-6  text-center text-xs">
+        (বর্তমানে সাতক্ষীরার কালিগঞ্জ উপজেলার জন্য চালু আছে)
+      </p>
     </div>
   );
 }

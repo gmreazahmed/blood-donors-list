@@ -59,6 +59,9 @@ export default function Home() {
       <h2 className="text-3xl font-semibold mb-4 text-gray-800">
         রক্ত দানকারীদের তালিকা-
       </h2>
+      <p className="text-red-600 mb-6 text-xs">
+        (বর্তমানে সাতক্ষীরার কালিগঞ্জ উপজেলার জন্য চালু আছে)
+      </p>
 
       <div className="flex flex-wrap gap-3 mb-6">
         <input
