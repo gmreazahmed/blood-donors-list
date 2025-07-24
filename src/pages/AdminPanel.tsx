@@ -10,6 +10,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { areaData } from "../data/upazila-union";
+import FooterCommentsAdmin from "../components/FooterCommentsAdmin";
+import BloodRequestAdmin from "../components/BloodRequestAdmin";
 
 interface Donor {
   id?: string;
@@ -102,6 +104,9 @@ export default function AdminPanel() {
   const getUnions = (upazila: string) => {
     return areaData[upazila] || [];
   };
+    
+  
+  
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -113,7 +118,7 @@ export default function AdminPanel() {
             localStorage.removeItem("isAdmin");
             navigate("/admin-login");
           }}
-          className="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded shadow-md transition"
+          className="bg-gray-700 hover:bg-red-800 text-white px-5 py-2 rounded shadow-md transition"
         >
           Sign Out
         </button>
@@ -196,7 +201,7 @@ export default function AdminPanel() {
           নতুন ডোনার যোগ করুন
         </button>
       </section>
-
+      
       {/* Search */}
       <section className="mb-4">
         <input
@@ -364,6 +369,17 @@ export default function AdminPanel() {
           </tbody>
         </table>
       </section>
+      
+      {/* Blood Requests Section */}
+      <div className="mx-auto">
+          <BloodRequestAdmin/>
+      </div>
+
+      {/* Footer Comments Section */}           
+      <div className="mx-auto">
+        <FooterCommentsAdmin />
+      </div>
+    
     </div>
   );
 }
