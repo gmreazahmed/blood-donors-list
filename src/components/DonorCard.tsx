@@ -43,7 +43,8 @@ export default function DonorCard({ donor }: { donor: Donor }) {
       
       <div className="flex flex-col gap-1 mb-3">
         <h3 className="text-2xl font-bold text-gray-800">{donor.name}</h3>
-        <p className="text-sm font-bold text-gray-700"><span className="font-medium">রক্তের গ্রুপ:</span> {donor.bloodGroup}</p>
+        <p className="text-sm font-bold text-gray-700"><span className="font-medium">রক্তের গ্রুপ:</span>{" "}
+        <span className="font-bold text-red-400">{donor.bloodGroup}</span></p>
         <p className="text-sm text-gray-700"><span className="font-medium">ঠিকানা:</span> {donor.village}, {donor.union}, {donor.upazila}</p>
         <p className="text-sm text-gray-700 flex items-center gap-2">
           <span className="font-medium">ফোন:</span>{" "}
