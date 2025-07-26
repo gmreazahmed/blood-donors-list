@@ -10,20 +10,20 @@ export default function SiteInfo() {
       </p>
 
       <p className="text-gray-700 text-base mb-6">
-        বর্তমানে সাইটটি সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য তৈরি করা হয়েছে। <br />
-        ভবিষ্যতে অন্যান্য উপজেলা ও অঞ্চলেও এই সেবাটি সম্প্রসারণের পরিকল্পনা রয়েছে।  
-        যেখানে ব্লাড ফাউন্ডেশনের সহযোগিতা পাওয়া গেলে দ্রুত তা চালু করা হবে।
+        এই সাইটের মাধ্যমে রক্তদাতারা তাদের তথ্য আপডেট করতে পারবেন এবং রক্তপ্রয়োজনকারীরা সহজেই প্রয়োজনীয় রক্তদাতাদের খুঁজে পাবেন।  
+        এছাড়া সর্বশেষ রক্তদানের তারিখও উল্লেখ থাকায় সহজে রক্তদাতা বাছাই করতে পারবেন।
       </p>
 
       <p className="text-gray-700 text-base mb-6">
-        এই সাইটের মাধ্যমে রক্তদাতারা তাদের তথ্য আপডেট করতে পারবেন এবং রক্তপ্রয়োজনকারীরা সহজেই প্রয়োজনীয় রক্তদাতাদের খুঁজে পেতে পারবেন।  
-        এছাড়া সর্বশেষ রক্তদানের তারিখও উল্লেখ থাকায় রক্তদাতার প্রস্তুতির বিষয়েও ধারণা পাওয়া যায়।
+        বর্তমানে সাইটটি সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য তৈরি করা হয়েছে। <br />
+        ভবিষ্যতে অন্যান্য উপজেলা ও অঞ্চলেও এই সেবাটি সম্প্রসারণের পরিকল্পনা রয়েছে।  
+        ফাউন্ডেশন গুলো সহযোগিতা পেলে, অন্যান্য উপজেলার জন্য উন্মুক্ত করে দেওয়া হবে।
       </p>
 
       <p className="text-gray-700 text-lg font-semibold mb-2">
-        তথ্য দিয়ে সার্বিক সহযোগিতায় ছিল যেসব ব্লাড ডোনেট ফাউন্ডেশন:
+        তথ্য এবং সার্বিক সহযোগিতায় ছিল যেসব ব্লাড ডোনেট ফাউন্ডেশন:
       </p>
-      <ul className="list-disc list-inside text-gray-800 text-base space-y-2 mb-6">
+      <ul className="list-disc list-inside font-semibold text-gray-800 text-base space-y-2 mb-6">
         <li>আমার ব্লাড ডোনেট ফাউন্ডেশন</li>
         <li>ব্লাড ডোনেট ফাউন্ডেশন</li>
       </ul>
@@ -35,10 +35,13 @@ export default function SiteInfo() {
 
       <p className="text-gray-800 text-base leading-relaxed mb-6">
         এই উদ্যোগের পেছনে ও ওয়েব অ্যাপ্লিকেশনটি ডেভেলপ করেছেন — <br />
-        <span className="font-semibold text-red-700">জিএম রিয়াজ আহমেদ</span>, <br />
-        <span className="font-semibold text-red-700">নাসিফ উর রহমান</span>, <br />
+        <span className="font-semibold text-red-700 hover:text-red-800">
+          <a href="https://www.facebook.com/gmreazahmed">জিএম রিয়াজ আহমেদ</a></span>, <br />
+        <span className="font-semibold text-red-700 hover:text-red-800">
+          <a href="https://www.facebook.com/nasif.rahman.980">নাসিফ উর রহমান</a></span>, <br />
         এবং সার্বিক সহযোগিতায় — <br />
-        <span className="font-semibold text-red-700">মীর মারুফ হোসেন</span>।
+        <span className="font-semibold text-red-700 hover:text-red-800">
+          <a href="https://www.facebook.com/MirMaruf360">মীর মারুফ হোসেন</a></span>।
       </p>
 
       {/* যোগাযোগ */}
