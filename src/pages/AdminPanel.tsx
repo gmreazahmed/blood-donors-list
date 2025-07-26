@@ -216,7 +216,7 @@ export default function AdminPanel() {
       {/* Donor Table */}
       <section className="overflow-x-auto rounded-lg shadow border border-gray-300 bg-white">
         <table className="min-w-full text-sm divide-y divide-gray-200">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               {[
                 "নাম",
@@ -236,139 +236,155 @@ export default function AdminPanel() {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
-            {filteredDonors.map((donor) => (
-              <tr
-                key={donor.id}
-                className="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
-              >
-                {editingId === donor.id ? (
-                  <>
-                    <td className="p-2 border border-gray-300">
-                      <input
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.name || ""}
-                        onChange={(e) =>
-                          setEditData({ ...editData, name: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td className="p-2 border border-gray-300">
-                      <select
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.bloodGroup || ""}
-                        onChange={(e) =>
-                          setEditData({ ...editData, bloodGroup: e.target.value })
-                        }
-                      >
-                        <option value="">রক্ত গ্রুপ</option>
-                        {bloodGroups.map((bg) => (
-                          <option key={bg} value={bg}>
-                            {bg}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="p-2 border border-gray-300">
-                      <input
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.phone || ""}
-                        onChange={(e) =>
-                          setEditData({ ...editData, phone: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td className="p-2 border border-gray-300">
-                      <select
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.upazila || ""}
-                        onChange={(e) =>
-                          setEditData({
-                            ...editData,
-                            upazila: e.target.value,
-                            union: "",
-                          })
-                        }
-                      >
-                        <option value="">উপজেলা</option>
-                        {Object.keys(areaData).map((upazila) => (
-                          <option key={upazila} value={upazila}>
-                            {upazila}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="p-2 border border-gray-300">
-                      <select
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.union || ""}
-                        onChange={(e) =>
-                          setEditData({ ...editData, union: e.target.value })
-                        }
-                      >
-                        <option value="">ইউনিয়ন</option>
-                        {getUnions(editData.upazila || "").map((union) => (
-                          <option key={union} value={union}>
-                            {union}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="p-2 border border-gray-300">
-                      <input
-                        className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
-                        value={editData.village || ""}
-                        onChange={(e) =>
-                          setEditData({ ...editData, village: e.target.value })
-                        }
-                      />
-                    </td>
-                    <td className="p-2 border border-gray-300 flex gap-2">
-                      <button
-                        onClick={handleUpdate}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded shadow transition"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded shadow transition"
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="p-2 border border-gray-300">{donor.name}</td>
-                    <td className="p-2 border border-gray-300">
-                      {donor.bloodGroup}
-                    </td>
-                    <td className="p-2 border border-gray-300">{donor.phone}</td>
-                    <td className="p-2 border border-gray-300">{donor.upazila}</td>
-                    <td className="p-2 border border-gray-300">{donor.union}</td>
-                    <td className="p-2 border border-gray-300">{donor.village}</td>
-                    <td className="p-2 border border-gray-300 flex gap-2">
-                      <button
-                        onClick={() => handleEdit(donor)}
-                        className="border border-green-500 text-green-500 hover:bg-green-500 hover:text-white text-xs px-3 py-1 rounded transition"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(donor.id!)}
-                        className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-xs px-3 py-1 rounded transition"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
-          </tbody>
         </table>
+
+        {/* Scrollable body container */}
+        <div className="max-h-[500px] overflow-y-auto">
+          <table className="min-w-full text-sm">
+            <tbody className="divide-y divide-gray-200">
+              {filteredDonors.map((donor) => (
+                <tr
+                  key={donor.id}
+                  className="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+                >
+                  {editingId === donor.id ? (
+                    <>
+                      {/* EDITING ROW (same as before) */}
+                      <td className="p-2 border border-gray-300">
+                        <input
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.name || ""}
+                          onChange={(e) =>
+                            setEditData({ ...editData, name: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        <select
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.bloodGroup || ""}
+                          onChange={(e) =>
+                            setEditData({
+                              ...editData,
+                              bloodGroup: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="">রক্ত গ্রুপ</option>
+                          {bloodGroups.map((bg) => (
+                            <option key={bg} value={bg}>
+                              {bg}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        <input
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.phone || ""}
+                          onChange={(e) =>
+                            setEditData({ ...editData, phone: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        <select
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.upazila || ""}
+                          onChange={(e) =>
+                            setEditData({
+                              ...editData,
+                              upazila: e.target.value,
+                              union: "",
+                            })
+                          }
+                        >
+                          <option value="">উপজেলা</option>
+                          {Object.keys(areaData).map((upazila) => (
+                            <option key={upazila} value={upazila}>
+                              {upazila}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        <select
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.union || ""}
+                          onChange={(e) =>
+                            setEditData({ ...editData, union: e.target.value })
+                          }
+                        >
+                          <option value="">ইউনিয়ন</option>
+                          {getUnions(editData.upazila || "").map((union) => (
+                            <option key={union} value={union}>
+                              {union}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        <input
+                          className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
+                          value={editData.village || ""}
+                          onChange={(e) =>
+                            setEditData({ ...editData, village: e.target.value })
+                          }
+                        />
+                      </td>
+                      <td className="p-2 border border-gray-300 flex gap-2">
+                        <button
+                          onClick={handleUpdate}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded shadow transition"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded shadow transition"
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="p-2 border border-gray-300">{donor.name}</td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.bloodGroup}
+                      </td>
+                      <td className="p-2 border border-gray-300">{donor.phone}</td>
+                      <td className="p-2 border border-gray-300">{donor.upazila}</td>
+                      <td className="p-2 border border-gray-300">{donor.union}</td>
+                      <td className="p-2 border border-gray-300">{donor.village}</td>
+                      <td className="p-2 border border-gray-300 flex gap-2">
+                        <button
+                          onClick={() => handleEdit(donor)}
+                          className="border border-green-500 text-green-500 hover:bg-green-500 hover:text-white text-xs px-3 py-1 rounded transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(donor.id!)}
+                          className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white text-xs px-3 py-1 rounded transition"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Footer showing how many donors are displayed */}
+        <div className="text-sm text-gray-600 p-3 border-t border-gray-300">
+          মোট: {filteredDonors.length} জন
+        </div>
       </section>
+
       
       {/* Blood Requests Section */}
       <div className="mx-auto">
