@@ -117,7 +117,7 @@ export default function DonorsList() {
       </div>
 
       {donors.length >= showCount && (
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 mb-6">
           <button
             onClick={() => setShowCount(prev => prev + 10)}
             className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700 transition"

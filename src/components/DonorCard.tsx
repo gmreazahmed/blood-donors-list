@@ -39,7 +39,7 @@ export default function DonorCard({ donor }: { donor: Donor }) {
   const isAvailable = daysAgo !== null && daysAgo >= 120;
 
   return (
-    <div className="relative border rounded-xl shadow-md p-6 bg-white hover:shadow-lg transition duration-300">
+    <div className="relative border rounded-xl shadow-md p-6 bg-red-40 hover:shadow-lg transition duration-300">
       
       <div className="flex flex-col gap-1 mb-3">
         <h3 className="text-2xl font-bold text-gray-800">{donor.name}</h3>

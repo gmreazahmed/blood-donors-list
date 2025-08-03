@@ -1,9 +1,13 @@
+import HeroSection from '../components/HeroSection'
 import DonorsList from './DonorsList'
 
 const Home = () => {
   return (
     <>
-    <DonorsList/>
+    <div className="bg-red-50 min-h-screen">
+      {/* <HeroSection /> */}
+      <DonorsList />
+    </div>
     </>
   )
 }
