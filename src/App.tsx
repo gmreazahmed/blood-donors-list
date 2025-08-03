@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Register from "./pages/Register";
 import SiteInfo from "./pages/SiteInfo";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AdminLogin from "./pages/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import BloodRequest from "./pages/BloodRequest";
+import DonorRegister from "./pages/DonorRegister";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<DonorRegister/>} />
           <Route path="/siteinfo" element={<SiteInfo />} />
           <Route path="*" element={<Home />} />
           <Route path="/admin-login" element={<AdminLogin />} />
