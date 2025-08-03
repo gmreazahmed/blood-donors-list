@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom"; // ✅ Import Link
 
 const slideTexts = [
   "এক ফোঁটা রক্ত, একটি নতুন জীবন।",
@@ -27,7 +28,7 @@ export default function HeroSection() {
   }, [paused]);
 
   return (
-    <section className="w-full bg-gradient-to-br from-red-200 to-white py-24 px-4 sm:px-8">
+    <section className="w-full bg-gradient-to-br from-red-200 to-white py-20 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto text-center">
         {/* SLIDER */}
         <div
@@ -42,7 +43,7 @@ export default function HeroSection() {
                 ${i === index ? "opacity-100 translate-y-0 z-10" : "opacity-0 translate-y-6 z-0"}
               `}
             >
-              <h1 className="text-xl sm:text-4xl font-bold text-red-700 px-2 leading-snug">
+              <h1 className="text-3xl font-bold text-red-700 px-2 leading-snug">
                 {text}
               </h1>
             </div>
@@ -56,18 +57,18 @@ export default function HeroSection() {
 
         {/* BUTTONS */}
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <a
-            href="/donors"
+          <Link
+            to="/donors"
             className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow"
           >
             রক্তদাতা খুঁজুন
-          </a>
-          <a
-            href="/register"
+          </Link>
+          <Link
+            to="/register"
             className="border border-red-600 text-red-600 hover:bg-red-100 font-semibold px-6 py-3 rounded-lg transition"
           >
             রক্তদাতা হোন
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -56,7 +56,7 @@ export default function DonorsList() {
     <div className="p-4 max-w-6xl mx-auto">
       <RegBtn/>
 
-      <h2 className="text-3xl font-semibold mb-4 text-gray-800">
+      <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-6">
         রক্ত দানকারীদের তালিকা-
       </h2>
       <p className="text-red-600 mb-6 text-xs">
