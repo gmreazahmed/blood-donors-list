@@ -4,7 +4,7 @@ import DonorsList from './DonorsList'
 const Home = () => {
   return (
     <>
-    <div className="bg-red-50 min-h-screen">
+    <div className="bg-red-50">
       <HeroSection />
       <DonorsList />
     </div>

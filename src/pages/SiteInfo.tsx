@@ -1,6 +1,6 @@
 export default function SiteInfo() {
   return (
-    <section id="siteInfoSection" className="bg-red-50 min-h-screen">
+    <section id="siteInfoSection" className="bg-red-50">
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-2xl font-bold text-red-600 mb-6">সাইট সম্পর্কে তথ্য</h1>
 
