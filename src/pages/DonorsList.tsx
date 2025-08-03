@@ -53,7 +53,7 @@ export default function DonorsList() {
   }, [blood, upazila, union, search, showCount]);
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
+    <div className="p-4 max-w-6xl mx-auto">
       <RegBtn/>
 
       <h2 className="text-3xl font-semibold mb-4 text-gray-800">
