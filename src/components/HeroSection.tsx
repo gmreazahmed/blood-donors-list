@@ -27,6 +27,13 @@ export default function HeroSection() {
     };
   }, [paused]);
 
+  const handleScrollToDonors = () => {
+    const element = document.getElementById("donorListSection");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="w-full bg-gradient-to-br from-red-200 to-white py-20 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto text-center">
@@ -52,17 +59,17 @@ export default function HeroSection() {
 
         {/* SUBTEXT */}
         <p className="mt-6 text-gray-600 text-base sm:text-lg max-w-xl mx-auto">
-          আপনার রক্ত দান অন্য কারো জীবনে আলো এনে দিতে পারে। আজই সিদ্ধান্ত নিন রক্তদাতা হওয়ার।
+           আমাদের মাধ্যমে দ্রুত রক্তদাতা খুঁজুন বা রক্ত দান করুন।
         </p>
 
         {/* BUTTONS */}
         <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <Link
-            to="/donors"
+          <button
+            onClick={handleScrollToDonors}
             className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg transition shadow"
           >
             রক্তদাতা খুঁজুন
-          </Link>
+          </button>
           <Link
             to="/register"
             className="border border-red-600 text-red-600 hover:bg-red-100 font-semibold px-6 py-3 rounded-lg transition"

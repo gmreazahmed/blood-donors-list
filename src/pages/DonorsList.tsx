@@ -53,79 +53,81 @@ export default function DonorsList() {
   }, [blood, upazila, union, search, showCount]);
 
   return (
-    <div className="p-4 max-w-6xl mx-auto">
-      <RegBtn/>
+    <section id="donorListSection">
+      <div className="p-4 max-w-6xl mx-auto">
+        <RegBtn/>
 
-      <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-6">
-        রক্ত দানকারীদের তালিকা-
-      </h2>
-      <p className="text-red-600 mb-6 text-xs">
-        (বর্তমানে সাতক্ষীরার কালিগঞ্জ উপজেলার জন্য চালু আছে)
-      </p>
+        <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-6">
+          রক্ত দানকারীদের তালিকা-
+        </h2>
+        <p className="text-red-600 mb-6 text-xs">
+          (বর্তমানে সাতক্ষীরার কালিগঞ্জ উপজেলার জন্য চালু আছে)
+        </p>
 
-      <div className="flex flex-wrap gap-3 mb-6">
-        <input
-          type="text"
-          placeholder="নাম বা ফোন দিয়ে খুঁজুন"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="flex-grow min-w-[200px] px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
-        />
-        <select
-          value={blood}
-          onChange={e => setBlood(e.target.value)}
-          className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
-        >
-          <option value="">রক্তের গ্রুপ</option>
-          {bloodGroups.map(bg => (
-            <option key={bg} value={bg}>{bg}</option>
-          ))}
-        </select>
-        <select
-          value={upazila}
-          onChange={e => {
-            setUpazila(e.target.value);
-            setUnion("");
-          }}
-          className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
-        >
-          <option value="">উপজেলা</option>
-          {upazilas.map(area => (
-            <option key={area} value={area}>{area}</option>
-          ))}
-        </select>
-        {upazila && (
+        <div className="flex flex-wrap gap-3 mb-6">
+          <input
+            type="text"
+            placeholder="নাম বা ফোন দিয়ে খুঁজুন"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="flex-grow min-w-[200px] px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+          />
           <select
-            value={union}
-            onChange={e => setUnion(e.target.value)}
+            value={blood}
+            onChange={e => setBlood(e.target.value)}
             className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
           >
-            <option value="">ইউনিয়ন</option>
-            {areaData[upazila].map(un => (
-              <option key={un} value={un}>{un}</option>
+            <option value="">রক্তের গ্রুপ</option>
+            {bloodGroups.map(bg => (
+              <option key={bg} value={bg}>{bg}</option>
             ))}
           </select>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {donors.length === 0 ? (
-          <p className="col-span-full text-center text-gray-500">কোনো ডোনার পাওয়া যায়নি</p>
-        ) : (
-          donors.map(donor => <DonorCard key={donor.id} donor={donor} />)
-        )}
-      </div>
-
-      {donors.length >= showCount && (
-        <div className="text-center mt-8 mb-6">
-          <button
-            onClick={() => setShowCount(prev => prev + 10)}
-            className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700 transition"
+          <select
+            value={upazila}
+            onChange={e => {
+              setUpazila(e.target.value);
+              setUnion("");
+            }}
+            className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
           >
-            আরও দেখুন
-          </button>
+            <option value="">উপজেলা</option>
+            {upazilas.map(area => (
+              <option key={area} value={area}>{area}</option>
+            ))}
+          </select>
+          {upazila && (
+            <select
+              value={union}
+              onChange={e => setUnion(e.target.value)}
+              className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">ইউনিয়ন</option>
+              {areaData[upazila].map(un => (
+                <option key={un} value={un}>{un}</option>
+              ))}
+            </select>
+          )}
         </div>
-      )}
-    </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {donors.length === 0 ? (
+            <p className="col-span-full text-center text-gray-500">কোনো ডোনার পাওয়া যায়নি</p>
+          ) : (
+            donors.map(donor => <DonorCard key={donor.id} donor={donor} />)
+          )}
+        </div>
+
+        {donors.length >= showCount && (
+          <div className="text-center mt-8 mb-6">
+            <button
+              onClick={() => setShowCount(prev => prev + 10)}
+              className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700 transition"
+            >
+              আরও দেখুন
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
