@@ -91,14 +91,14 @@ export default function Footer() {
               placeholder="নাম/মোবাইল নম্বর"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
               required
             />
             <textarea
               placeholder="মন্তব্য"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full border px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
               rows={4}
               required
             ></textarea>
