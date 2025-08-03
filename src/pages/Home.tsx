@@ -1,4 +1,4 @@
-import HeroSection from '../components/HeroSection'
+// import HeroSection from '../components/HeroSection'
 import DonorsList from './DonorsList'
 
 const Home = () => {
