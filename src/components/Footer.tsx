@@ -59,7 +59,7 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-800 mb-2 text-lg">Social Links</h3>
             <div className="flex gap-5 text-2xl text-gray-600">
               <a
-                href="#"
+                href="https://www.facebook.com/roktodata.online"
                 target="_blank"
                 rel="noreferrer"
                 title="Facebook Page"
@@ -68,7 +68,7 @@ export default function Footer() {
                 <FaFacebook />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/groups/roktodata.online"
                 target="_blank"
                 rel="noreferrer"
                 title="Facebook Group"
