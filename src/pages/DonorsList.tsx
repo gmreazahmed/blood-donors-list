@@ -57,7 +57,7 @@ export default function DonorsList() {
       <div className="p-4 max-w-6xl mx-auto">
         <RegBtn/>
 
-        <h2 className="text-2xl font-bold text-gray-700 mb-4 mt-6">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-500 to-gray-800 bg-clip-text text-transparent mb-4 mt-22">
           রক্ত দানকারীদের তালিকা-
         </h2>
         <p className="text-red-600 mb-6 text-xs">
@@ -70,12 +70,12 @@ export default function DonorsList() {
             placeholder="নাম বা ফোন দিয়ে খুঁজুন"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="flex-grow min-w-[200px] px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="flex-grow min-w-[200px] px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
           />
           <select
             value={blood}
             onChange={e => setBlood(e.target.value)}
-            className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
           >
             <option value="">রক্তের গ্রুপ</option>
             {bloodGroups.map(bg => (
@@ -88,7 +88,7 @@ export default function DonorsList() {
               setUpazila(e.target.value);
               setUnion("");
             }}
-            className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
           >
             <option value="">উপজেলা</option>
             {upazilas.map(area => (
@@ -99,7 +99,7 @@ export default function DonorsList() {
             <select
               value={union}
               onChange={e => setUnion(e.target.value)}
-              className="w-36 px-3 py-2 border shadow-md rounded-xl focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             >
               <option value="">ইউনিয়ন</option>
               {areaData[upazila].map(un => (

@@ -63,7 +63,7 @@ export default function DonorRegister() {
 
   return (
     <section className="bg-red-50">
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="max-w-2xl mx-auto p-6 mt-15">
         <h2 className="text-2xl font-bold text-center text-red-600 mb-6">
           রক্তদাতা নিবন্ধন ফর্ম
         </h2>
@@ -76,7 +76,7 @@ export default function DonorRegister() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-red-40 shadow-md border rounded-lg p-6 space-y-5"
+          className="bg-red-40 shadow-xl rounded-lg p-6 space-y-5"
         >
           <div>
             <label className="block text-sm font-medium mb-1">পূর্ণ নাম *</label>
@@ -86,7 +86,7 @@ export default function DonorRegister() {
               placeholder="পূর্ণ নাম লিখুন"
               value={form.name}
               onChange={handleChange}
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
               required
             />
           </div>
@@ -97,7 +97,7 @@ export default function DonorRegister() {
               name="bloodGroup"
               value={form.bloodGroup}
               onChange={handleChange}
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
               required
             >
               <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
@@ -115,7 +115,7 @@ export default function DonorRegister() {
               name="upazila"
               value={form.upazila}
               onChange={handleChange}
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
               required
             >
               <option value="">উপজেলা নির্বাচন করুন</option>
@@ -134,7 +134,7 @@ export default function DonorRegister() {
                 name="union"
                 value={form.union}
                 onChange={handleChange}
-                className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                 required
               >
                 <option value="">ইউনিয়ন নির্বাচন করুন</option>
@@ -155,7 +155,7 @@ export default function DonorRegister() {
               value={form.village}
               onChange={handleChange}
               placeholder="গ্রামের নাম"
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
               required
             />
           </div>
@@ -168,7 +168,7 @@ export default function DonorRegister() {
               value={form.phone}
               onChange={handleChange}
               placeholder="01XXXXXXXXX"
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
               required
             />
           </div>
@@ -182,13 +182,13 @@ export default function DonorRegister() {
               name="lastDonateDate"
               value={form.lastDonateDate}
               onChange={handleChange}
-              className="border rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="border border-gray-300 rounded w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded transition"
+            className="w-full bg-red-700 hover:bg-red-600 text-white font-medium py-2 px-4 rounded transition"
           >
             নিবন্ধন করুন
           </button>

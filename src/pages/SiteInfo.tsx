@@ -36,12 +36,12 @@ export default function SiteInfo() {
 
         <p className="text-gray-800 text-base leading-relaxed mb-6">
           এই উদ্যোগের পেছনে ও ওয়েব অ্যাপ্লিকেশনটি ডেভেলপ করেছেন — <br />
-          <span className="font-semibold text-red-700 hover:text-red-800">
+          <span className="text-xl font-extrabold  bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
             <a href="https://www.facebook.com/gmreazahmed">জিএম রিয়াজ আহমেদ</a></span>, <br />
-          <span className="font-semibold text-red-700 hover:text-red-800">
+          <span className="text-xl font-extrabold  bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
             <a href="https://www.facebook.com/nasif.rahman.980">নাসিফ উর রহমান</a></span>, <br />
           এবং সার্বিক সহযোগিতায় — <br />
-          <span className="font-semibold text-red-700 hover:text-red-800">
+          <span className="text-xl font-extrabold  bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
             <a href="https://www.facebook.com/MirMaruf360">মীর মারুফ হোসেন</a></span>।
         </p>
 

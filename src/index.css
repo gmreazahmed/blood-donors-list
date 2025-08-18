@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+
+
+
+.arrow-container svg {
+  animation: upDown 1.5s infinite ease-in-out; /* Animation duration and easing */
+}
+
+@keyframes upDown {
+  0%, 100% {
+    transform: translateY(0); /* Start and end at original position */
+  }
+  50% {
+    transform: translateY(10px); /* Move down 10px at the midpoint */
+  }
+}

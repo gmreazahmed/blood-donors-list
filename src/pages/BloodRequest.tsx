@@ -200,7 +200,7 @@ export default function BloodRequestPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md font-semibold transition"
+              className="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md font-semibold transition"
             >
               {loading ? "অনুরোধ প্রেরণ হচ্ছে..." : "অনুরোধ পাঠান"}
             </button>
