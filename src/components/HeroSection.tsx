@@ -52,7 +52,7 @@ export default function HeroSection() {
         >
           {/* SLIDER */}
           <div
-            className="relative h-[100px] sm:h-[130px] overflow-hidden"
+            className="relative h-[100px] sm:h-[200px] overflow-hidden"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
@@ -63,7 +63,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.8 }}
-                className="absolute w-full text-2xl sm:text-4xl font-extrabold  bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent mt-5 leading-snug"
+                className="absolute w-full text-2xl sm:text-5xl font-extrabold  bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent mt-5 leading-snug"
               >
                 {slideTexts[index]}
               </motion.h1>
@@ -71,7 +71,7 @@ export default function HeroSection() {
           </div>
 
                    {/* SUBTEXT with Typewriter */}
-         <div className="mt-12 font-semibold bg-gradient-to-r from-gray-500 via-gray-600 to-gray-800 bg-clip-text text-transparent text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
+         <div className="mt-9 font-semibold bg-gradient-to-r from-gray-500 via-gray-600 to-gray-800 bg-clip-text text-transparent text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
   <Typewriter
     options={{
       strings: ["আমাদের মাধ্যমে দ্রুত রক্তদাতা খুঁজুন বা রক্ত দান করুন।"],
