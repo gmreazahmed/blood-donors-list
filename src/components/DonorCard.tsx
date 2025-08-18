@@ -48,21 +48,19 @@ export default function DonorCard({ donor }: { donor: Donor }) {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.4 }}
-      className="relative group w-full max-w-md mx-auto"
+      className="relative group w-full max-w-md mx-auto cursor-pointer"
     >
-      {/* Animated Gradient Border */}
-      <div className="absolute inset-0 rounded-2xl opacity-70 blur-lg group-hover:opacity-100 transition duration-500"></div>
-
-      <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden transition-colors duration-500 group-hover:bg-red-200 opacity-90 group-hover:text-black">
         {/* Availability Badge */}
         <div className="absolute top-3 right-3">
           {isAvailable ? (
-            <span className="flex items-center gap-1 bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="flex items-center gap-1 bg-green-100 text-green-700 group-hover:bg-green-600 group-hover:text-white text-xs font-semibold px-2 py-1 rounded-full transition">
               <CheckCircle2 size={14} /> প্রস্তুত
             </span>
           ) : (
-            <span className="flex items-center gap-1 bg-red-100 text-red-600 text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="flex items-center gap-1 bg-red-100 text-red-600 group-hover:bg-red-700 group-hover:text-white text-xs font-semibold px-2 py-1 rounded-full transition">
               <XCircle size={14} /> অনুপলব্ধ
             </span>
           )}
@@ -70,21 +68,21 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
         {/* Donor Info */}
         <div className="p-6 space-y-3">
-          <h3 className="text-2xl font-bold text-gray-900">{donor.name}</h3>
-          <p className="text-sm font-semibold text-gray-700">
+          <h3 className="text-2xl font-bold">{donor.name}</h3>
+          <p className="text-sm font-semibold">
             <span className="font-medium">রক্তের গ্রুপ:</span>{" "}
-            <span className="font-bold text-red-600 text-lg">
+            <span className="font-bold text-red-600 text-lg group-hover:text-red-800">
               {donor.bloodGroup}
             </span>
           </p>
-          <p className="text-sm text-gray-700">
+          <p className="text-sm">
             <span className="font-medium">ঠিকানা:</span> {donor.village},{" "}
             {donor.union}, {donor.upazila}
           </p>
 
           {/* Phone */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-medium text-gray-700">ফোন:</span>
+            <span className="text-sm font-medium">ফোন:</span>
             <span className="font-bold">{donor.phone}</span>
             <a
               href={`tel:${donor.phone}`}
@@ -97,8 +95,8 @@ export default function DonorCard({ donor }: { donor: Donor }) {
         </div>
 
         {/* Divider */}
-        <div className="border-t p-4 bg-gray-50">
-          <label className="text-sm font-medium text-gray-700 block mb-2">
+        <div className="border-t p-4 bg-gray-50 group-hover:bg-red-200">
+          <label className="text-sm font-medium block mb-2">
             সর্বশেষ রক্তদানের তারিখ:
           </label>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -118,12 +116,12 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
           {/* Availability Info */}
           {isAvailable && (
-            <p className="text-xs text-green-600 mt-2">
+            <p className="text-xs mt-2 text-green-600 group-hover:text-green-800">
               ✅ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে। এখন রক্ত দানে প্রস্তুত।
             </p>
           )}
           {!isAvailable && daysAgo !== null && (
-            <p className="text-xs text-red-600 mt-2">
+            <p className="text-xs mt-2 text-red-600 group-hover:text-red-800">
               ❌ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে। ডোনার এখন প্রস্তুত নয়।
             </p>
           )}
