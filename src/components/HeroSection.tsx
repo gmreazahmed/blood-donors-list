@@ -42,7 +42,7 @@ export default function HeroSection() {
 
   return (
     <section className="w-full mt-15 py-16 px-6 sm:px-10 ">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         {/* LEFT: Text Section */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -72,23 +72,22 @@ export default function HeroSection() {
 
                    {/* SUBTEXT with Typewriter */}
          <div className="mt-9 font-semibold text-gray-700 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
-  <Typewriter
-    options={{
-      strings: ["আমাদের মাধ্যমে দ্রুত রক্তদাতা খুঁজুন বা রক্ত দান করুন।"],
-      autoStart: true,
-      loop: true,
-      delay: 50,
-      deleteSpeed: 50,
+        <Typewriter
+            options={{
+              strings: ["আমাদের মাধ্যমে দ্রুত রক্তদাতা খুঁজুন বা রক্ত দান করুন।"],
+              autoStart: true,
+              loop: true,
+              delay: 50,
+              deleteSpeed: 50,
 
-    }}
-  />
-</div>
+            }}
+          />
+        </div>
 
           {/* BUTTONS */}
           <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
             <motion.button
               whileHover={{
-                scale: 1.05,
                 boxShadow: "0px 0px 20px rgba(220,38,38,0.6)",
               }}
               whileTap={{ scale: 0.95 }}
@@ -99,13 +98,12 @@ export default function HeroSection() {
             </motion.button>
             <motion.div
               whileHover={{
-                scale: 1.05,
                 boxShadow: "0px 0px 20px rgba(220,38,38,0.4)",
               }}
             >
               <Link
                 to="/register"
-                className="border border-red-600 text-red-700 hover:bg-red-50 font-semibold px-6 py-3 rounded-lg transition block"
+                className="border border-red-600 text-red-700 hover:bg-red-700 hover:text-white font-semibold px-6 py-3 rounded-lg transition block"
               >
                 রক্তদাতা হোন
               </Link>
@@ -113,15 +111,9 @@ export default function HeroSection() {
             
           </div>
 
-          <div className=" flex items-center justify-center pt-15 lg:justify-start">
-          <button
-           onClick={handleScrollToDonors}
-              className="w-6 h-6 flex items-center justify-center rounded bg-red-700 opacity-70 text-white shadow-lg hover:bg-red-800 hover:shadow-red-500/50 transition duration-300 animate-bounce"
-             >
-          <ChevronDown size={20} />
-          </button>
-          </div>
+          
 
+          
           
         </motion.div>
         
@@ -136,7 +128,7 @@ export default function HeroSection() {
           <motion.img
             src="/hero.jpg" // ✅ Replace with your own hero image
             alt="Blood Donation"
-            className="w-full rounded-2xl max-w-sm sm:max-w-md lg:max-w-lg h-auto drop-shadow-2xl"
+            className="rounded-2xl w-full drop-shadow-2xl"
             animate={{ y: [0, -20, 0] }}
             transition={{
               duration: 4,
@@ -146,6 +138,23 @@ export default function HeroSection() {
           />
         </motion.div>
       </div>
+      <div className="pt-10 block text-center">
+            <button
+            onClick={handleScrollToDonors} className="p-2 hover:shadow-red-500/50 transition duration-300 animate-bounce cursor-pointer">
+              <svg className="w-[14px] sm:w-[15px] md:w-[16px] lg:w-[20px] xl:w-[24px] 2xl:w-[32px]" viewBox="0 0 24 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g opacity="0.8">
+              <path d="M19.9201 29.0499L13.4001 22.5299C12.6301 21.7599 11.3701 21.7599 10.6001 22.5299L4.08008 29.0499" stroke="#000" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g opacity="0.6">
+              <path d="M17.2802 17.0334L12.9335 12.6868C12.4202 12.1734 11.5802 12.1734 11.0669 12.6868L6.72021 17.0334" stroke="#000" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g opacity="0.3">
+              <path d="M15.3002 6.27077L12.5835 3.5541C12.2627 3.23327 11.7377 3.23327 11.4169 3.5541L8.7002 6.27077" stroke="#000" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              </svg>
+            </button>
+          </div>
+
     </section>
   );
 }

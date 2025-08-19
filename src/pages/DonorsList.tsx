@@ -84,26 +84,45 @@ export default function DonorsList() {
       <div className="p-4 max-w-6xl mx-auto">
         <RegBtn />
 
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-500 to-gray-800 bg-clip-text text-transparent mb-4 mt-22">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-500 to-gray-800 bg-clip-text text-transparent mb-4 mt-0">
           রক্ত দানকারীদের তালিকা-
         </h2>
-        <p className="text-red-600 mb-6 text-xs">
+        <p className="text-red-600 mb-8 text-xs">
           (বর্তমানে সাতক্ষীরার কালিগঞ্জ উপজেলার জন্য চালু আছে)
         </p>
 
         {/* 🔽 Filters */}
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex flex-wrap gap-3 mb-10">
           <input
             type="text"
             placeholder="নাম বা ফোন দিয়ে খুঁজুন"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="flex-grow min-w-[200px] px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="
+            flex-grow min-w-[200px]
+            px-4 py-3
+            rounded-lg
+            border border-gray-300
+            bg-white
+            shadow-sm
+            text-gray-800 placeholder-gray-400
+            focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500
+            hover:border-gray-400
+            transition-all duration-200 ease-in-out
+          "
           />
           <select
             value={blood}
             onChange={e => setBlood(e.target.value)}
-            className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="w-36 px-4 py-3
+            rounded-lg
+            border border-gray-300
+            bg-white
+            shadow-sm
+            text-gray-800 placeholder-gray-400
+            focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500
+            hover:border-gray-400
+            transition-all duration-200 ease-in-out"
           >
             <option value="">রক্তের গ্রুপ</option>
             {bloodGroups.map(bg => (
@@ -116,7 +135,15 @@ export default function DonorsList() {
               setUpazila(e.target.value);
               setUnion("");
             }}
-            className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            className="w-36 px-4 py-3
+            rounded-lg
+            border border-gray-300
+            bg-white
+            shadow-sm
+            text-gray-800 placeholder-gray-400
+            focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500
+            hover:border-gray-400
+            transition-all duration-200 ease-in-out"
           >
             <option value="">উপজেলা</option>
             {upazilas.map(area => (
@@ -127,12 +154,20 @@ export default function DonorsList() {
             <select
               value={union}
               onChange={e => setUnion(e.target.value)}
-              className="w-36 px-3 py-2 border border-gray-400 shadow-md rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">ইউনিয়ন</option>
-              {areaData[upazila].map(un => (
-                <option key={un} value={un}>{un}</option>
-              ))}
+              className="w-36 px-4 py-3
+              rounded-lg
+              border border-gray-300
+              bg-white
+              shadow-sm
+              text-gray-800 placeholder-gray-400
+              focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500
+              hover:border-gray-400
+              transition-all duration-200 ease-in-out"
+              >
+                <option value="">ইউনিয়ন</option>
+                {areaData[upazila].map(un => (
+                  <option key={un} value={un}>{un}</option>
+                ))}
             </select>
           )}
 
@@ -142,7 +177,7 @@ export default function DonorsList() {
             className={`px-4 py-2 rounded shadow-md transition ${
               availableOnly
                 ? "bg-green-600 text-white hover:bg-green-700"
-                : "border border-gray-400 text-gray-700 hover:bg-gray-300"
+                : "text-white bg-red-500 hover:bg-red-500"
             }`}
           >
             {availableOnly ? " প্রস্তুত" : "সব ডোনার"}

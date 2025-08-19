@@ -7,8 +7,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-red-600 to-red-900  text-white shadow-lg fixed w-full z-50">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+    <nav className="bg-gradient-to-r from-red-600 to-red-900  text-white shadow-lg fixed w-full z-50 ">
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link
           to="/"
@@ -27,7 +27,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 text-sm font-semibold">
+        <ul className="hidden md:flex gap-[11px] sm:gap-[12px] md:gap-[13px] lg:gap-[14px] xl:gap-[15px] 2xl:gap-[16px] text-[11px] sm:text-[12px] md:text-[13px] lg:text-[14px] xl:text-[15px] 2xl:text-[16px] font-semibold">
           <NavItem to="/">Donor List</NavItem>
           <NavItem to="/register">Register Donor</NavItem>
           <NavItem to="/blood-request">Request Blood</NavItem>
@@ -77,8 +77,15 @@ function NavItem({
   mobile?: boolean;
   onClick?: () => void;
 }) {
-  const baseStyle =
-    "block px-4 py-2 rounded-lg hover:bg-white hover:text-red-600 transition duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
+const baseStyle = `
+  block px-4 py-2
+  rounded-[52.222px]
+  transition-all duration-300 ease-in-out
+  hover:bg-[linear-gradient(180deg,rgba(5,5,31,0.10)_20%,rgba(255,255,255,0.10)_100%)]
+  hover:shadow-md
+  cursor-pointer
+`;
+
 
   return (
     <li>
