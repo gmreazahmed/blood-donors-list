@@ -26,7 +26,8 @@ export default function SiteInfo() {
         </p>
         <ul className="list-disc list-inside font-semibold text-gray-800 text-base space-y-2 mb-6">
           <li>আমার ব্লাড ডোনেট ফাউন্ডেশন</li>
-          <li>ব্লাড ডোনেট ফাউন্ডেশন</li>
+          <li>রায়পুর নিজদেবপুর ব্লাড ফাউন্ডেশন</li>
+          <li>Hope Blood Donate Foundation</li>
         </ul>
 
         <p className="text-gray-700 text-base mb-6">
