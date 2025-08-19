@@ -35,7 +35,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Section 1: Info */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-extrabold text-red-600">Rokto Data</h2>
+          <h2 className="text-2xl font-extrabold text-red-700">Rokto Data</h2>
           <p className="leading-relaxed text-justify text-gray-700">
             সাইটটি জনসেবামূলক উদ্দেশ্যে তৈরি করা হয়েছে এবং সকলের জন্য উন্মুক্ত।
             রক্তদাতারা সহজেই তথ্য হালনাগাদ করতে পারবেন এবং প্রয়োজনকারীরা দ্রুত রক্তদাতা খুঁজে পাবেন।
@@ -105,7 +105,7 @@ export default function Footer() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition font-medium w-full"
+              className="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition font-medium w-full"
             >
               {loading ? "পাঠানো হচ্ছে..." : "মন্তব্য পাঠান"}
             </button>

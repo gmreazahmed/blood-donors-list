@@ -71,7 +71,7 @@ export default function HeroSection() {
           </div>
 
                    {/* SUBTEXT with Typewriter */}
-         <div className="mt-9 font-semibold bg-gradient-to-r from-gray-500 via-gray-600 to-gray-800 bg-clip-text text-transparent text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
+         <div className="mt-9 font-semibold text-gray-700 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
   <Typewriter
     options={{
       strings: ["আমাদের মাধ্যমে দ্রুত রক্তদাতা খুঁজুন বা রক্ত দান করুন।"],
