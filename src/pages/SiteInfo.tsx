@@ -46,7 +46,7 @@ export default function SiteInfo() {
             <a href="https://www.facebook.com/MirMaruf360">মীর মারুফ হোসেন</a></span>।
         </p>
 
-        {/* যোগাযোগ */}
+        
         <div className="border-t pt-6 mt-6 items-center text-center">
           <p className="text-red-500 text-base mb-3">
             *যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের পরামর্শ বক্সে জানান।*
