@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Typewriter from "typewriter-effect";
-import { ChevronDown } from "lucide-react";
 
 // ✅ Text slider content
 const slideTexts = [
