@@ -33,9 +33,7 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
   const handleUpdate = async () => {
     if (!editDate) return;
-    alert(
-      "যেহেতু জনস্বার্থে সবার জন্য উন্মুক্ত এজন্য ভুল তথ্য প্রদান করবেন না, অনুগ্রহ করে সঠিক তথ্য প্রদান করুন।"
-    );
+    alert("⚠️ জনস্বার্থে সঠিক তথ্য দিন, ভুল তথ্য দেবেন না।");
     const ref = doc(db, "donors", donor.id);
     await updateDoc(ref, { lastDonateDate: editDate });
     alert("✅ সর্বশেষ রক্তদানের তারিখ আপডেট হয়েছে।");
@@ -47,12 +45,12 @@ export default function DonorCard({ donor }: { donor: Donor }) {
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      transition={{ duration: 0.4 }}
-      className="relative group w-full max-w-md mx-auto cursor-pointer"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.3 }}
+      className="w-full h-full"
     >
-      <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden transition-colors duration-500 group-hover:bg-red-200 opacity-90 group-hover:text-black">
+      <div className="relative bg-white rounded-2xl shadow-md overflow-hidden transition-colors duration-500 group hover:bg-red-200 hover:text-black h-full flex flex-col justify-between">
         {/* Availability Badge */}
         <div className="absolute top-3 right-3">
           {isAvailable ? (
@@ -68,22 +66,24 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
         {/* Donor Info */}
         <div className="p-6 space-y-3">
-          <h3 className="text-2xl font-bold">{donor.name}</h3>
-          <p className="text-sm font-semibold">
+          <h3 className="text-xl font-bold">{donor.name}</h3>
+
+          <p className="text-sm">
             <span className="font-medium">রক্তের গ্রুপ:</span>{" "}
             <span className="font-bold text-red-600 text-lg group-hover:text-red-800">
               {donor.bloodGroup}
             </span>
           </p>
+
           <p className="text-sm">
-            <span className="font-medium">ঠিকানা:</span> {donor.village},{" "}
-            {donor.union}, {donor.upazila}
+            <span className="font-medium">ঠিকানা:</span>{" "}
+            {donor.village}, {donor.union}, {donor.upazila}
           </p>
 
           {/* Phone */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-medium">ফোন:</span>
-            <span className="font-bold">{donor.phone}</span>
+            <span className="font-semibold">{donor.phone}</span>
             <a
               href={`tel:${donor.phone}`}
               className="flex items-center gap-1 border border-green-500 text-green-600 hover:bg-green-600 hover:text-white text-xs px-3 py-1 rounded transition"
@@ -94,21 +94,21 @@ export default function DonorCard({ donor }: { donor: Donor }) {
           </div>
         </div>
 
-        {/* Divider */}
+        {/* Bottom Section */}
         <div className="border-t p-4 bg-gray-50 group-hover:bg-red-200">
           <label className="text-sm font-medium block mb-2">
-            সর্বশেষ রক্তদানের তারিখ:
+            সর্বশেষ রক্তদানের তারিখ-
           </label>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <input
               type="date"
               value={editDate}
               onChange={(e) => setEditDate(e.target.value)}
-              className="border rounded px-3 py-1 text-sm text-gray-800 shadow-sm w-full sm:w-auto"
+              className="border rounded px-3 py-2 text-sm text-gray-800 shadow-sm focus:ring-1 focus:ring-red-500 focus:border-red-500"
             />
             <button
               onClick={handleUpdate}
-              className="border border-green-500 text-green-500 hover:bg-green-500 hover:text-white px-4 py-1 rounded text-sm transition w-full sm:w-auto"
+              className="border border-green-500 text-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded text-sm transition"
             >
               আপডেট করুন
             </button>
@@ -116,13 +116,13 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
           {/* Availability Info */}
           {isAvailable && (
-            <p className="text-xs mt-2 text-green-600 group-hover:text-green-800">
-              ✅ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে। এখন রক্ত দানে প্রস্তুত।
+            <p className="text-xs mt-3 text-green-600 group-hover:text-green-800">
+              ✅ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে — এখন প্রস্তুত।
             </p>
           )}
           {!isAvailable && daysAgo !== null && (
-            <p className="text-xs mt-2 text-red-600 group-hover:text-red-800">
-              ❌ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে। ডোনার এখন প্রস্তুত নয়।
+            <p className="text-xs mt-3 text-red-600 group-hover:text-red-800">
+              ❌ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে — এখনো প্রস্তুত নয়।
             </p>
           )}
         </div>
