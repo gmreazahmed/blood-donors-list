@@ -1,7 +1,7 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -12,8 +12,13 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="bg-gradient-to-r from-white  to-gray-300 bg-clip-text text-transparent text-2xl font-bold tracking-wide hover:scale-105 transition-transform"
+          className="bg-gradient-to-r from-white  to-gray-300 bg-clip-text text-transparent text-2xl font-bold tracking-wide hover:scale-105 transition-transform flex gap-2 items-center"
         >
+          <img
+            className="w-[15px] sm:w-[16px] md:w-[20px] lg:w-[24px] xl:w-[32px] 2xl:w-[36px]"
+            src="https://th.bing.com/th/id/R.c933a03de613e862e69643898bd31a1e?rik=wVKcEouBfo2vtg&riu=http%3a%2f%2fnurex.it%2fwp-content%2fuploads%2f2021%2f12%2fcropped-blood.jpg&ehk=59DSBXEbwbaJoPx%2bt0LadiyOjBhRnbylVHn7zUlG4%2bg%3d&risl=&pid=ImgRaw&r=0"
+            alt="lodading"
+          />
           Rokto Data
         </Link>
 
@@ -52,7 +57,11 @@ export default function Navbar() {
               <NavItem to="/register" mobile onClick={() => setOpen(false)}>
                 Register Donor
               </NavItem>
-              <NavItem to="/blood-request" mobile onClick={() => setOpen(false)}>
+              <NavItem
+                to="/blood-request"
+                mobile
+                onClick={() => setOpen(false)}
+              >
                 Request Blood
               </NavItem>
               <NavItem to="/siteinfo" mobile onClick={() => setOpen(false)}>
@@ -77,7 +86,7 @@ function NavItem({
   mobile?: boolean;
   onClick?: () => void;
 }) {
-const baseStyle = `
+  const baseStyle = `
   block px-4 py-2
   rounded-[52.222px]
   transition-all duration-300 ease-in-out
@@ -85,7 +94,6 @@ const baseStyle = `
   hover:shadow-md
   cursor-pointer
 `;
-
 
   return (
     <li>

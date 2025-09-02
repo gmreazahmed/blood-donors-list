@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
 import { motion } from "framer-motion";
-import { Phone, CheckCircle2, XCircle } from "lucide-react";
+import { Calendar, CheckCircle2, Phone, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { db } from "../firebase/config";
 
 type Donor = {
   id: string;
@@ -43,50 +43,49 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.01 }}
+      transition={{ duration: 0.25 }}
       className="w-full h-full"
     >
-      <div className="relative bg-white rounded-2xl shadow-md overflow-hidden transition-colors duration-500 group hover:bg-red-200 hover:text-black h-full flex flex-col justify-between">
+      <div className="relative bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col">
         {/* Availability Badge */}
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-4 right-4">
           {isAvailable ? (
-            <span className="flex items-center gap-1 bg-green-100 text-green-700 group-hover:bg-green-600 group-hover:text-white text-xs font-semibold px-2 py-1 rounded-full transition">
+            <span className="flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
               <CheckCircle2 size={14} /> প্রস্তুত
             </span>
           ) : (
-            <span className="flex items-center gap-1 bg-red-100 text-red-600 group-hover:bg-red-700 group-hover:text-white text-xs font-semibold px-2 py-1 rounded-full transition">
+            <span className="flex items-center gap-1 bg-red-100 text-red-600 text-xs font-medium px-2 py-1 rounded-full">
               <XCircle size={14} /> অনুপলব্ধ
             </span>
           )}
         </div>
 
         {/* Donor Info */}
-        <div className="p-6 space-y-3">
-          <h3 className="text-xl font-bold">{donor.name}</h3>
+        <div className="p-6 space-y-3 flex-1">
+          <h3 className="text-xl font-semibold text-gray-900">{donor.name}</h3>
 
-          <p className="text-sm">
-            <span className="font-medium">রক্তের গ্রুপ:</span>{" "}
-            <span className="font-bold text-red-600 text-lg group-hover:text-red-800">
+          <p className="flex items-center gap-2 text-sm">
+            <span className="font-medium text-gray-700">রক্তের গ্রুপ:</span>
+            <span className="text-lg font-bold text-red-600">
               {donor.bloodGroup}
             </span>
           </p>
 
-          <p className="text-sm">
-            <span className="font-medium">ঠিকানা:</span>{" "}
-            {donor.village}, {donor.union}, {donor.upazila}
+          <p className="text-sm text-gray-700">
+            <span className="font-medium">ঠিকানা:</span> {donor.village},{" "}
+            {donor.union}, {donor.upazila}
           </p>
 
           {/* Phone */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-medium">ফোন:</span>
-            <span className="font-semibold">{donor.phone}</span>
+            <span className="text-sm font-medium text-gray-700">ফোন:</span>
+            <span className="font-semibold text-gray-900">{donor.phone}</span>
             <a
               href={`tel:${donor.phone}`}
-              className="flex items-center gap-1 border border-green-500 text-green-600 hover:bg-green-600 hover:text-white text-xs px-3 py-1 rounded transition"
+              className="flex items-center gap-1 border border-green-500 text-green-600 hover:bg-green-600 hover:text-white text-xs px-3 py-1.5 rounded-lg transition"
             >
               <Phone size={14} />
               কল করুন
@@ -95,20 +94,20 @@ export default function DonorCard({ donor }: { donor: Donor }) {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t p-4 bg-gray-50 group-hover:bg-red-200">
-          <label className="text-sm font-medium block mb-2">
-            সর্বশেষ রক্তদানের তারিখ-
+        <div className="border-t bg-gray-50 px-6 py-4">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-1 mb-2">
+            <Calendar size={14} /> সর্বশেষ রক্তদানের তারিখ
           </label>
           <div className="flex items-center gap-3 flex-wrap">
             <input
               type="date"
               value={editDate}
               onChange={(e) => setEditDate(e.target.value)}
-              className="border rounded px-3 py-2 text-sm text-gray-800 shadow-sm focus:ring-1 focus:ring-red-500 focus:border-red-500"
+              className="border rounded-lg px-3 py-2 text-sm text-gray-800 shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             />
             <button
               onClick={handleUpdate}
-              className="border border-green-500 text-green-600 hover:bg-green-600 hover:text-white px-4 py-2 rounded text-sm transition"
+              className="bg-green-600 text-white hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-medium transition"
             >
               আপডেট করুন
             </button>
@@ -116,13 +115,13 @@ export default function DonorCard({ donor }: { donor: Donor }) {
 
           {/* Availability Info */}
           {isAvailable && (
-            <p className="text-xs mt-3 text-green-600 group-hover:text-green-800">
-              ✅ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে — এখন প্রস্তুত।
+            <p className="text-xs mt-3 text-green-600">
+              ✅ {daysAgo} দিন আগে রক্তদান হয়েছে — এখন প্রস্তুত।
             </p>
           )}
           {!isAvailable && daysAgo !== null && (
-            <p className="text-xs mt-3 text-red-600 group-hover:text-red-800">
-              ❌ সর্বশেষ রক্তদান হয়েছে {daysAgo} দিন আগে — এখনো প্রস্তুত নয়।
+            <p className="text-xs mt-3 text-red-600">
+              ❌ {daysAgo} দিন আগে রক্তদান হয়েছে — এখনো প্রস্তুত নয়।
             </p>
           )}
         </div>
