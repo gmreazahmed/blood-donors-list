@@ -1,4 +1,12 @@
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { areaData } from "../data/upazila-union";
@@ -26,6 +34,7 @@ export default function DonorRegister() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // ✅ Required fields check
     if (
       !form.name ||
       !form.bloodGroup ||
@@ -37,11 +46,42 @@ export default function DonorRegister() {
       return;
     }
 
+    // ✅ Phone validation
+    const phoneRegex = /^01[0-9]{9}$/;
+    if (!phoneRegex.test(form.phone)) {
+      alert("⚠️ অনুগ্রহ করে সঠিক ফোন নাম্বার লিখুন (01XXXXXXXXX)");
+      return;
+    }
+
+    // ✅ Check if phone already exists
+    try {
+      const donorsRef = collection(db, "donors");
+      const q = query(donorsRef, where("phone", "==", form.phone));
+      const snap = await getDocs(q);
+
+      if (!snap.empty) {
+        alert("⚠️ এই ফোন নাম্বার দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা হয়েছে!");
+        return;
+      }
+    } catch (err) {
+      console.error("Error checking phone duplicate:", err);
+      alert("দুঃখিত, ফোন চেক করতে সমস্যা হয়েছে।");
+      return;
+    }
+
+    // ✅ Confirm phone
+    const isConfirmed = window.confirm(
+      `আপনি কি এই ফোন নাম্বারটি নিশ্চিত করছেন? ${form.phone}`
+    );
+    if (!isConfirmed) return;
+
+    // ✅ Add donor
     try {
       await addDoc(collection(db, "donors"), {
         ...form,
         createdAt: Timestamp.now(),
       });
+
       setForm({
         name: "",
         bloodGroup: "",
@@ -51,13 +91,13 @@ export default function DonorRegister() {
         phone: "",
         lastDonateDate: "",
       });
+
       setSuccess(true);
       navigate("/");
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
+      setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
       console.error("Error adding donor:", error);
+      alert("দুঃখিত, ডোনর সংযুক্ত করতে সমস্যা হয়েছে।");
     }
   };
 
@@ -66,13 +106,9 @@ export default function DonorRegister() {
       <div className="container mx-auto w-full relative">
         {/* Glass Card */}
         <div className="backdrop-blur-xl bg-white/40 shadow-2xl border border-white/30 rounded-3xl p-8">
-          <h2 className="text-3xl font-extrabold text-center bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-6">
-            রক্তদাতা নিবন্ধন ফর্ম
-          </h2>
-
           {success && (
-            <div className="bg-green-100/80 text-green-800 border border-green-300 rounded-lg px-4 py-2 mb-4 text-center font-medium shadow">
-              ✅ সফলভাবে নিবন্ধন সম্পন্ন হয়েছে!
+            <div className="mb-4 px-4 py-2 rounded-lg bg-green-100 border border-green-400 text-green-700">
+              ✅ রক্তদাতা সফলভাবে সংযুক্ত হয়েছে!
             </div>
           )}
 
@@ -92,7 +128,6 @@ export default function DonorRegister() {
                 required
               />
             </div>
-
             {/* Blood Group */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -115,7 +150,6 @@ export default function DonorRegister() {
                 )}
               </select>
             </div>
-
             {/* Upazila */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -136,7 +170,6 @@ export default function DonorRegister() {
                 ))}
               </select>
             </div>
-
             {/* Union */}
             {form.upazila && (
               <div>
@@ -159,7 +192,6 @@ export default function DonorRegister() {
                 </select>
               </div>
             )}
-
             {/* Village */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -175,7 +207,6 @@ export default function DonorRegister() {
                 required
               />
             </div>
-
             {/* Phone */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -191,7 +222,6 @@ export default function DonorRegister() {
                 required
               />
             </div>
-
             {/* Last Donate */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -206,7 +236,6 @@ export default function DonorRegister() {
                 className="w-full px-4 py-2 rounded-lg border border-gray-200 bg-white/70 shadow-sm focus:ring-2 focus:ring-red-400 focus:border-red-400 outline-none transition"
               />
             </div>
-
             {/* Submit */}
             <button
               type="submit"

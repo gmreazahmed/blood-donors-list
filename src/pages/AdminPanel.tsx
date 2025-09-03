@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { db } from "../firebase/config";
 import {
+  addDoc,
   collection,
   deleteDoc,
   doc,
   getDocs,
   updateDoc,
-  addDoc,
 } from "firebase/firestore";
-import { areaData } from "../data/upazila-union";
-import FooterCommentsAdmin from "../components/FooterCommentsAdmin";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BloodRequestAdmin from "../components/BloodRequestAdmin";
+import FooterCommentsAdmin from "../components/FooterCommentsAdmin";
+import { areaData } from "../data/upazila-union";
+import { db } from "../firebase/config";
 
 interface Donor {
   id?: string;
@@ -47,7 +47,7 @@ export default function AdminPanel() {
     } else {
       fetchDonors();
     }
-  }, []);
+  }, [navigate]);
 
   const fetchDonors = async () => {
     const snap = await getDocs(collection(db, "donors"));
@@ -104,9 +104,6 @@ export default function AdminPanel() {
   const getUnions = (upazila: string) => {
     return areaData[upazila] || [];
   };
-    
-  
-  
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -142,7 +139,9 @@ export default function AdminPanel() {
             placeholder="ফোন"
             className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
             value={newDonor.phone}
-            onChange={(e) => setNewDonor({ ...newDonor, phone: e.target.value })}
+            onChange={(e) =>
+              setNewDonor({ ...newDonor, phone: e.target.value })
+            }
           />
           <select
             className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -191,7 +190,9 @@ export default function AdminPanel() {
             placeholder="গ্রাম"
             className="border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
             value={newDonor.village}
-            onChange={(e) => setNewDonor({ ...newDonor, village: e.target.value })}
+            onChange={(e) =>
+              setNewDonor({ ...newDonor, village: e.target.value })
+            }
           />
         </div>
         <button
@@ -201,7 +202,7 @@ export default function AdminPanel() {
           নতুন ডোনার যোগ করুন
         </button>
       </section>
-      
+
       {/* Search */}
       <section className="mb-4">
         <input
@@ -328,7 +329,10 @@ export default function AdminPanel() {
                           className="border border-gray-300 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-green-400"
                           value={editData.village || ""}
                           onChange={(e) =>
-                            setEditData({ ...editData, village: e.target.value })
+                            setEditData({
+                              ...editData,
+                              village: e.target.value,
+                            })
                           }
                         />
                       </td>
@@ -349,14 +353,24 @@ export default function AdminPanel() {
                     </>
                   ) : (
                     <>
-                      <td className="p-2 border border-gray-300">{donor.name}</td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.name}
+                      </td>
                       <td className="p-2 border border-gray-300">
                         {donor.bloodGroup}
                       </td>
-                      <td className="p-2 border border-gray-300">{donor.phone}</td>
-                      <td className="p-2 border border-gray-300">{donor.upazila}</td>
-                      <td className="p-2 border border-gray-300">{donor.union}</td>
-                      <td className="p-2 border border-gray-300">{donor.village}</td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.phone}
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.upazila}
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.union}
+                      </td>
+                      <td className="p-2 border border-gray-300">
+                        {donor.village}
+                      </td>
                       <td className="p-2 border border-gray-300 flex gap-2">
                         <button
                           onClick={() => handleEdit(donor)}
@@ -385,17 +399,15 @@ export default function AdminPanel() {
         </div>
       </section>
 
-      
       {/* Blood Requests Section */}
       <div className="mx-auto">
-          <BloodRequestAdmin/>
+        <BloodRequestAdmin />
       </div>
 
-      {/* Footer Comments Section */}           
+      {/* Footer Comments Section */}
       <div className="mx-auto">
         <FooterCommentsAdmin />
       </div>
-    
     </div>
   );
 }

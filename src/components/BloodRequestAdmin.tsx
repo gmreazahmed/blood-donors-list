@@ -1,14 +1,22 @@
-import { useEffect, useState } from "react";
+"use client";
 import {
   collection,
-  getDocs,
-  updateDoc,
   deleteDoc,
   doc,
+  getDocs,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
+
+interface RequestData {
+  name: string;
+  age: number;
+  bloodGroup: string;
+  contact: string;
+}
 
 type BloodRequest = {
   id: string;
@@ -18,13 +26,15 @@ type BloodRequest = {
   hospital: string;
   reason: string;
   fulfilled: boolean;
-  createdAt: any;
+  createdAt: RequestData;
 };
 
 export default function BloodRequestAdmin() {
   const [requests, setRequests] = useState<BloodRequest[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<Omit<BloodRequest, "id" | "createdAt">>({
+  const [editForm, setEditForm] = useState<
+    Omit<BloodRequest, "id" | "createdAt">
+  >({
     name: "",
     phone: "",
     bloodGroup: "",
@@ -34,7 +44,10 @@ export default function BloodRequestAdmin() {
   });
 
   const fetchRequests = async () => {
-    const q = query(collection(db, "bloodRequests"), orderBy("createdAt", "desc"));
+    const q = query(
+      collection(db, "bloodRequests"),
+      orderBy("createdAt", "desc")
+    );
     const snapshot = await getDocs(q);
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
@@ -60,24 +73,25 @@ export default function BloodRequestAdmin() {
   };
 
   const handleEditChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-) => {
-  const { name, value, type } = e.target;
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
 
-  if (type === "checkbox") {
-    const checked = (e.target as HTMLInputElement).checked;
-    setEditForm((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-  } else {
-    setEditForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-};
-
+    if (type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked;
+      setEditForm((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+    } else {
+      setEditForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
 
   const handleUpdate = async () => {
     if (!editingId) return;
@@ -103,7 +117,10 @@ export default function BloodRequestAdmin() {
         <div className="space-y-6">
           {requests.map((req) =>
             editingId === req.id ? (
-              <div key={req.id} className="border p-4 rounded-md bg-gray-50 space-y-2">
+              <div
+                key={req.id}
+                className="border p-4 rounded-md bg-gray-50 space-y-2"
+              >
                 <input
                   type="text"
                   name="name"
@@ -127,11 +144,13 @@ export default function BloodRequestAdmin() {
                   className="w-full border p-2 rounded"
                 >
                   <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
-                  {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-                    <option key={bg} value={bg}>
-                      {bg}
-                    </option>
-                  ))}
+                  {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
+                    (bg) => (
+                      <option key={bg} value={bg}>
+                        {bg}
+                      </option>
+                    )
+                  )}
                 </select>
                 <input
                   type="text"
@@ -178,11 +197,15 @@ export default function BloodRequestAdmin() {
                 className="border p-4 rounded-md bg-white shadow-sm flex justify-between items-start"
               >
                 <div>
-                  <p className="font-semibold">{req.name} ({req.bloodGroup})</p>
+                  <p className="font-semibold">
+                    {req.name} ({req.bloodGroup})
+                  </p>
                   <p>📞 {req.phone}</p>
                   <p>🏥 {req.hospital}</p>
                   <p>📝 {req.reason}</p>
-                  <p className="text-sm text-gray-500">{req.fulfilled ? "Fulfilled" : "Pending"}</p>
+                  <p className="text-sm text-gray-500">
+                    {req.fulfilled ? "Fulfilled" : "Pending"}
+                  </p>
                 </div>
                 <div className="flex flex-col gap-2">
                   <button

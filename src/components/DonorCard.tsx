@@ -12,31 +12,54 @@ type Donor = {
   union: string;
   village: string;
   phone: string;
-  lastDonateDate?: string;
+  lastDonateDate?: string | { toDate: () => Date }; // Handle string or Firestore Timestamp
 };
 
 export default function DonorCard({ donor }: { donor: Donor }) {
-  const [editDate, setEditDate] = useState(donor.lastDonateDate || "");
+  const [editDate, setEditDate] = useState<string>(
+    typeof donor.lastDonateDate === "string"
+      ? donor.lastDonateDate
+      : donor.lastDonateDate?.toDate().toISOString().split("T")[0] || ""
+  );
   const [daysAgo, setDaysAgo] = useState<number | null>(null);
 
   useEffect(() => {
-    if (editDate) {
-      const diff = Math.floor(
-        (new Date().getTime() - new Date(editDate).getTime()) /
-          (1000 * 60 * 60 * 24)
-      );
-      setDaysAgo(diff);
-    } else {
+    if (!editDate) {
       setDaysAgo(null);
+      return;
     }
-  }, [editDate]);
+
+    let lastDate: Date;
+    if (typeof donor.lastDonateDate === "string") {
+      lastDate = new Date(donor.lastDonateDate);
+    } else if (donor.lastDonateDate && "toDate" in donor.lastDonateDate) {
+      lastDate = donor.lastDonateDate.toDate();
+    } else {
+      lastDate = new Date(editDate);
+    }
+
+    const diff = Math.floor(
+      (new Date().getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    setDaysAgo(diff);
+  }, [editDate, donor.lastDonateDate]);
 
   const handleUpdate = async () => {
     if (!editDate) return;
-    alert("⚠️ জনস্বার্থে সঠিক তথ্য দিন, ভুল তথ্য দেবেন না।");
-    const ref = doc(db, "donors", donor.id);
-    await updateDoc(ref, { lastDonateDate: editDate });
-    alert("✅ সর্বশেষ রক্তদানের তারিখ আপডেট হয়েছে।");
+
+    const confirmUpdate = window.confirm(
+      "⚠️ জনস্বার্থে সঠিক তথ্য দিন, ভুল তথ্য দেবেন না। আপডেট করবেন কি?"
+    );
+    if (!confirmUpdate) return;
+
+    try {
+      const ref = doc(db, "donors", donor.id);
+      await updateDoc(ref, { lastDonateDate: editDate });
+      alert("✅ সর্বশেষ রক্তদানের তারিখ আপডেট হয়েছে।");
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("❌ আপডেট ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
+    }
   };
 
   const isAvailable = daysAgo !== null && daysAgo >= 120;

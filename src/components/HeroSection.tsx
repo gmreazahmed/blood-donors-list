@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Typewriter from "typewriter-effect";
-
 const slideTexts = [
   "এক ফোঁটা রক্ত, একটি নতুন জীবন।",
   "রক্ত দিন, মানবতা বাঁচান।",
@@ -15,24 +14,31 @@ const slideTexts = [
 export default function HeroSection() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // ✅ Auto text slider
+  // Browser setInterval returns number
+  const intervalRef = useRef<number | null>(null);
+
   useEffect(() => {
     if (!paused) {
-      intervalRef.current = setInterval(() => {
+      intervalRef.current = window.setInterval(() => {
         setIndex((prev) => (prev + 1) % slideTexts.length);
       }, 4000);
     }
-    return () => intervalRef.current && clearInterval(intervalRef.current);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [paused]);
 
-  const handleScrollToDonors = () => {
+  function handleScrollToDonors(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
     const element = document.getElementById("donorListSection");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }
 
   return (
     <section className="relative  w-full py-20 px-6 sm:px-10 overflow-hidden pt-[80px] lg:pt-[100px] xl:pt-[150px] 2xl:pt-[250px]">

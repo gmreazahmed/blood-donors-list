@@ -1,10 +1,16 @@
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DonorCard from "../components/DonorCard";
 import { areaData } from "../data/upazila-union";
 import { db } from "../firebase/config";
 import RegBtn from "./../components/RegBtn";
-
+interface Donorss {
+  id: string;
+  name: string;
+  bloodGroup: string;
+  location: string;
+  phone: string;
+}
 interface Donor {
   id: string;
   name: string;
@@ -13,7 +19,7 @@ interface Donor {
   union: string;
   village: string;
   phone: string;
-  lastDonateDate?: any;
+  lastDonateDate?: Donorss;
 }
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -23,12 +29,16 @@ const isAvailable = (donor: Donor) => {
   if (!donor.lastDonateDate) return true;
 
   let lastDate: Date;
+
   if (typeof donor.lastDonateDate === "string") {
     lastDate = new Date(donor.lastDonateDate);
-  } else if (donor.lastDonateDate?.toDate) {
+  } else if (
+    "toDate" in donor.lastDonateDate &&
+    typeof donor.lastDonateDate.toDate === "function"
+  ) {
     lastDate = donor.lastDonateDate.toDate();
   } else {
-    return true;
+    return true; // unknown type, consider available
   }
 
   const now = new Date();
@@ -48,7 +58,7 @@ export default function DonorsList() {
   const [showCount, setShowCount] = useState(10);
   const [availableOnly, setAvailableOnly] = useState(false);
 
-  const fetchDonors = async () => {
+  const fetchDonors = useCallback(async () => {
     const snap = await getDocs(collection(db, "donors"));
     let donorData: Donor[] = snap.docs.map((doc) => ({
       id: doc.id,
@@ -70,11 +80,11 @@ export default function DonorsList() {
     }
 
     setDonors(donorData.slice(0, showCount));
-  };
+  }, [blood, upazila, union, search, showCount, availableOnly]);
 
   useEffect(() => {
     fetchDonors();
-  }, [blood, upazila, union, search, showCount, availableOnly]);
+  }, [blood, upazila, union, search, showCount, availableOnly, fetchDonors]);
 
   return (
     <section id="donorListSection" className="min-h-screen bg-gray-50">

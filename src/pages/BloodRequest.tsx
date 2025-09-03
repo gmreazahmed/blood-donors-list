@@ -1,17 +1,22 @@
-import { useState, useEffect } from "react";
 import {
-  collection,
-  getDocs,
-  updateDoc,
-  doc,
-  query,
-  orderBy,
-  limit,
   addDoc,
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
   Timestamp,
+  updateDoc,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
-
+interface BloodRequests {
+  name: string;
+  bloodGroup: string;
+  location: string;
+  phone: string;
+}
 type BloodRequest = {
   id: string;
   name: string;
@@ -20,7 +25,7 @@ type BloodRequest = {
   hospital: string;
   reason: string;
   fulfilled: boolean;
-  createdAt: any;
+  createdAt: BloodRequests;
 };
 
 export default function BloodRequestPage() {
@@ -35,7 +40,11 @@ export default function BloodRequestPage() {
   const [loading, setLoading] = useState(false);
 
   const fetchRequests = async () => {
-    const q = query(collection(db, "bloodRequests"), orderBy("createdAt", "desc"), limit(10));
+    const q = query(
+      collection(db, "bloodRequests"),
+      orderBy("createdAt", "desc"),
+      limit(10)
+    );
     const snapshot = await getDocs(q);
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
@@ -54,7 +63,9 @@ export default function BloodRequestPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -75,7 +86,13 @@ export default function BloodRequestPage() {
         createdAt: Timestamp.now(),
       });
       alert("আপনার রক্তের অনুরোধ সফলভাবে পাঠানো হয়েছে।");
-      setForm({ name: "", phone: "", bloodGroup: "", hospital: "", reason: "" });
+      setForm({
+        name: "",
+        phone: "",
+        bloodGroup: "",
+        hospital: "",
+        reason: "",
+      });
       fetchRequests();
     } catch (err) {
       alert("ত্রুটি ঘটেছে, অনুগ্রহ করে আবার চেষ্টা করুন।");
@@ -95,7 +112,9 @@ export default function BloodRequestPage() {
         {/* Request List */}
         <div className="space-y-6 mb-12">
           {requests.length === 0 && (
-            <p className="text-center text-gray-500">কোনো রক্তের অনুরোধ পাওয়া যায়নি।</p>
+            <p className="text-center text-gray-500">
+              কোনো রক্তের অনুরোধ পাওয়া যায়নি।
+            </p>
           )}
           {requests.map((req) => (
             <div
@@ -103,7 +122,9 @@ export default function BloodRequestPage() {
               className="bg-red-30 rounded-xl shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
             >
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold text-red-600">{req.name}</h3>
+                <h3 className="text-lg font-semibold text-red-600">
+                  {req.name}
+                </h3>
                 <p className="text-sm text-gray-700">
                   📞{" "}
                   <a
@@ -114,10 +135,12 @@ export default function BloodRequestPage() {
                   </a>
                 </p>
                 <p className="text-sm text-gray-700">
-                  🩸 <span className="font-medium">গ্রুপ:</span> {req.bloodGroup}
+                  🩸 <span className="font-medium">গ্রুপ:</span>{" "}
+                  {req.bloodGroup}
                 </p>
                 <p className="text-sm text-gray-700">
-                  🏥 <span className="font-medium">হাসপাতাল:</span> {req.hospital}
+                  🏥 <span className="font-medium">হাসপাতাল:</span>{" "}
+                  {req.hospital}
                 </p>
                 <p className="text-sm text-gray-700">
                   📝 <span className="font-medium">কারণ:</span> {req.reason}
