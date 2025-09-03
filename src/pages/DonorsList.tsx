@@ -1,17 +1,10 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import DonorCard from "../components/DonorCard";
 import { areaData } from "../data/upazila-union";
 import { db } from "../firebase/config";
-import RegBtn from "./../components/RegBtn";
-interface Donorss {
-  id: string;
-  name: string;
-  bloodGroup: string;
-  location: string;
-  phone: string;
-}
-interface Donor {
+import RegBtn from "../components/RegBtn";
+type Donor = {
   id: string;
   name: string;
   bloodGroup: string;
@@ -19,8 +12,8 @@ interface Donor {
   union: string;
   village: string;
   phone: string;
-  lastDonateDate?: Donorss;
-}
+  lastDonateDate?: string | Timestamp; // ✅ string বা Timestamp
+};
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const upazilas = Object.keys(areaData);
@@ -29,16 +22,10 @@ const isAvailable = (donor: Donor) => {
   if (!donor.lastDonateDate) return true;
 
   let lastDate: Date;
-
   if (typeof donor.lastDonateDate === "string") {
     lastDate = new Date(donor.lastDonateDate);
-  } else if (
-    "toDate" in donor.lastDonateDate &&
-    typeof donor.lastDonateDate.toDate === "function"
-  ) {
-    lastDate = donor.lastDonateDate.toDate();
   } else {
-    return true; // unknown type, consider available
+    lastDate = donor.lastDonateDate.toDate();
   }
 
   const now = new Date();
@@ -75,9 +62,7 @@ export default function DonorsList() {
           d.phone.toLowerCase().includes(search.toLowerCase())
       );
     }
-    if (availableOnly) {
-      donorData = donorData.filter(isAvailable);
-    }
+    if (availableOnly) donorData = donorData.filter(isAvailable);
 
     setDonors(donorData.slice(0, showCount));
   }, [blood, upazila, union, search, showCount, availableOnly]);
@@ -112,19 +97,6 @@ export default function DonorsList() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
               />
-              <svg
-                className="absolute right-3 top-3.5 h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
             </div>
             <select
               value={blood}
@@ -203,18 +175,7 @@ export default function DonorsList() {
           <div className="text-center mt-10">
             <button
               onClick={() => setShowCount((prev) => prev + 10)}
-              className="group relative bg-red-500 h-16 w-64 border text-left p-3  text-gray-50 text-base font-bold rounded-lg overflow-hidden
-                underline underline-offset-2 hover:underline hover:underline-offset-4 hover:decoration-2
-                origin-left duration-500 hover:duration-500
-                hover:bg-red-300 hover:text-red-950 hover:border-red-400
-
-                before:absolute before:w-12 before:h-12 before:content-[''] before:right-1 before:top-1 before:z-10 before:bg-red-400 before:rounded-full before:blur-lg
-                after:absolute after:z-10 after:w-20 after:h-20 after:content-[''] after:bg-red-600 after:right-8 after:top-3 after:rounded-full after:blur
-
-                group-hover:before:duration-500 group-hover:after:duration-1000 
-                before:duration-500 after:duration-500
-                hover:after:-right-2 hover:before:top-8 hover:before:right-16 hover:after:scale-150 
-                hover:after:blur-none hover:before:-bottom-8 hover:before:blur-none"
+              className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
             >
               আরও দেখুন
             </button>
