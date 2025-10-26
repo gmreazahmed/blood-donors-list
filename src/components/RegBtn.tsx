@@ -5,7 +5,7 @@ export default function RegBtn() {
     <div className="fixed bottom-5 right-5 md:hidden z-50">
       <Link
         to="/register"
-        className="bg-red-700 text-white px-5 py-5 rounded-full shadow-lg hover:bg-red-600 transition 
+        className="bg-red-700 text-white px-5 py-5 rounded-xl shadow-lg hover:bg-red-600 transition 
                    flex items-center justify-center font-medium text-sm select-none
                    active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
         aria-label="Register New Donor"
