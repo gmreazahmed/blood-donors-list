@@ -139,7 +139,7 @@ export default function DonorsList() {
                 ))}
               </select>
             )}
-            {/* <button
+            <button
               onClick={() => setAvailableOnly((prev) => !prev)}
               className={`w-full sm:w-auto px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
                 availableOnly
@@ -148,7 +148,7 @@ export default function DonorsList() {
               }`}
             >
               {availableOnly ? "প্রস্তুত ডোনার" : "সব ডোনার"}
-            </button> */}
+            </button>
           </div>
         </div>
 
