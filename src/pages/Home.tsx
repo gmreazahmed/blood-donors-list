@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async";
 import HeroSection from '../components/HeroSection'
 import DonorsList from './DonorsList'
 
