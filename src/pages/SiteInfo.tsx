@@ -1,73 +1,102 @@
 export default function SiteInfo() {
   return (
-    <section id="siteInfoSection" className="bg-red-50 mt-15">
-      <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-2xl font-bold text-red-700 mb-6">সাইট সম্পর্কে তথ্য</h1>
+    <section className="min-h-screen bg-gradient-to-b from-red-50 via-white to-red-50 py-10">
+      <div className="max-w-4xl mx-auto px-4 space-y-10">
 
-        <p className="text-gray-800 text-lg leading-relaxed mb-6">
-          এই ওয়েবসাইটটি জনসেবামূলক উদ্দেশ্যে তৈরি করা হয়েছে।  
-          আমরা বিশ্বাস করি, রক্তদানের মাধ্যমে অনেক মানুষের জীবন রক্ষা ও বাঁচানো সম্ভব।  
-          তাই এই প্ল্যাটফর্মটি সকলের জন্য উন্মুক্ত, এবং সবাইকে অনুরোধ করা হচ্ছে সঠিক তথ্য প্রদান করতে — কারণ এটি সবার কল্যাণের জন্য।
-        </p>
-
-        <p className="text-gray-700 text-base mb-6">
-          এই সাইটের মাধ্যমে রক্তদাতারা তাদের তথ্য আপডেট করতে পারবেন এবং রক্তপ্রয়োজনকারীরা সহজেই প্রয়োজনীয় রক্তদাতাদের খুঁজে পাবেন।  
-          এছাড়া সর্বশেষ রক্তদানের তারিখও উল্লেখ থাকায় সহজে রক্তদাতা বাছাই করতে পারবেন।
-        </p>
-
-        <p className="text-gray-700 text-base mb-6">
-          বর্তমানে সাইটটি সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য তৈরি করা হয়েছে। <br />
-          ভবিষ্যতে অন্যান্য উপজেলা ও অঞ্চলেও এই সেবাটি সম্প্রসারণের পরিকল্পনা রয়েছে।  
-          ফাউন্ডেশনগুলো সহযোগিতা পেলে, অন্যান্য উপজেলার জন্য উন্মুক্ত করে দেওয়া হবে।
-        </p>
-
-        <p className="text-gray-700 text-lg font-semibold mb-2">
-          তথ্য এবং সার্বিক সহযোগিতায় ছিল যেসব ব্লাড ডোনেট ফাউন্ডেশন:
-        </p>
-        <ul className="list-disc list-inside font-semibold text-gray-800 text-base space-y-2 mb-6">
-          <li>আমার ব্লাড ডোনেট ফাউন্ডেশন</li>
-          <li>রায়পুর নিজদেবপুর ব্লাড ফাউন্ডেশন</li>
-          <li>Hope Blood Donate Foundation</li>
-        </ul>
-
-        <p className="text-gray-700 text-base mb-6">
-          আপনার সহযোগিতা আমাদের জন্য অত্যন্ত মূল্যবান এবং এটি আমাদের কাজ চালিয়ে যাওয়ার অনুপ্রেরণা দেয়।  
-          আসুন, সবাই মিলে “রক্ত দেই, জীবন বাঁচাই” এই উদ্দেশ্যকে সফল করি।
-        </p>
-
-        <p className="text-gray-800 text-base leading-relaxed mb-6">
-          এই উদ্যোগের পেছনে ও ওয়েব অ্যাপ্লিকেশনটি ডেভেলপ করেছেন — <br />
-          <span className="text-xl font-extrabold bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
-            <a href="https://www.facebook.com/gmreazahmed">জিএম রিয়াজ আহমেদ</a>
-          </span>, <br />
-          <span className="text-xl font-extrabold bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
-            <a href="https://www.facebook.com/nasif.rahman.980">নাসিফ উর রহমান</a>
-          </span>, <br />
-          এবং সার্বিক সহযোগিতায় — <br />
-          <span className="text-xl font-extrabold bg-gradient-to-r from-red-600 to-red-900 bg-clip-text text-transparent hover:text-red-800">
-            <a href="https://www.facebook.com/MirMaruf360">মীর মারুফ হোসেন</a>
-          </span>।
-        </p>
-
-        {/* Bamboo Coders Agency Info */}
-        <div className="bg-red-100 border-l-4 border-red-500 p-4 rounded-lg mb-6">
-          <h2 className="text-red-700 text-lg font-semibold mb-2">Agency তথ্য</h2>
-          <p className="text-gray-800 text-base mb-1">
-            ওয়েব অ্যাপ্লিকেশনটি তৈরি করেছে <span className="font-semibold">Bamboo Coders</span>
-          </p>
-          <p className="text-gray-800 text-base mb-1">
-            ফোন: <a href="tel:+8801917800006" className="text-red-600 font-medium hover:underline">+8801917800006</a>
-          </p>
-          <p className="text-gray-800 text-base">
-            ইমেইল: <a href="mailto:bamboocodersbd@gimail.com" className="text-red-600 font-medium hover:underline">bamboocodersbd@gimail.com</a>
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-red-600">
+            সাইট সম্পর্কে
+          </h1>
+          <p className="text-gray-500 mt-2">
+            RoktoData — একটি জনসেবামূলক উদ্যোগ
           </p>
         </div>
 
-        <div className="border-t pt-6 mt-6 items-center text-center">
-          <p className="text-red-500 text-base mb-3">
-            *যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের পরামর্শ বক্সে জানান।*
+        {/* Card 1 */}
+        <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">
+          <p className="text-gray-700 leading-relaxed">
+            এই ওয়েবসাইটটি জনসেবামূলক উদ্দেশ্যে তৈরি করা হয়েছে। আমরা বিশ্বাস করি, রক্তদানের মাধ্যমে অনেক মানুষের জীবন রক্ষা ও বাঁচানো সম্ভব। তাই এই প্ল্যাটফর্মটি সকলের জন্য উন্মুক্ত, এবং সবাইকে অনুরোধ করা হচ্ছে সঠিক তথ্য প্রদান করতে — কারণ এটি সবার কল্যাণের জন্য।
+          </p>
+          
+        </div>
+
+        {/* Card 2 */}
+        <div className="bg-white rounded-2xl shadow-md p-6 space-y-4">
+          <h2 className="text-xl font-semibold text-red-600">
+            কীভাবে কাজ করে -
+          </h2>
+
+          <ul className="list-disc pl-5 text-gray-700 space-y-2">
+            <li>রক্তদাতারা সহজে তথ্য যোগ করতে পারেন</li>
+            <li>রক্তপ্রয়োজনকারীরা দ্রুত donor খুঁজে পান</li>
+            <li>সর্বশেষ রক্তদানের তথ্য দেখা যায়</li>
+          </ul>
+          <p className="text-gray-700">
+            এই সাইটটি বর্তমানে সাতক্ষীরা জেলার কালিগঞ্জ উপজেলার জন্য চালু রয়েছে।
+            ভবিষ্যতে অন্যান্য অঞ্চলেও এই সেবা সম্প্রসারণের পরিকল্পনা রয়েছে।
+          </p>
+
+        </div>
+
+        {/* Foundation */}
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <h2 className="text-xl font-semibold text-red-600 mb-3">
+            তথ্য এবং সার্বিক সহযোগিতায় ছিল যেসব ব্লাড ডোনেট ফাউন্ডেশন -
+          </h2>
+
+          <ul className="space-y-2 text-gray-700 font-medium">
+            <li>✔ আমার ব্লাড ডোনেট ফাউন্ডেশন</li>
+            <li>✔ রায়পুর নিজদেবপুর ব্লাড ফাউন্ডেশন</li>
+            <li>✔ Hope Blood Donate Foundation</li>
+          </ul>
+        </div>
+
+        {/* Developers */}
+        <div className="bg-white rounded-2xl shadow-md p-6 text-center space-y-3">
+          <h2 className="text-xl font-semibold text-red-600">
+            এই উদ্যোগের পেছনে ও ওয়েব অ্যাপ্লিকেশনটি ডেভেলপ করেছেন -
+          </h2>
+
+          <p className="text-gray-700">
+            <a href="https://www.facebook.com/gmreazahmed" className="text-red-600 font-semibold">
+              জিএম রিয়াজ আহমেদ
+            </a>
+          </p>
+
+          <p className="text-gray-700">
+            <a href="https://www.facebook.com/nasif.rahman.980" className="text-red-600 font-semibold">
+              নাসিফ উর রহমান
+            </a>
+          </p>
+
+          <p className="text-gray-700">
+            <a href="https://www.facebook.com/MirMaruf360" className="text-red-600 font-semibold">
+              মীর মারুফ হোসেন
+            </a>
           </p>
         </div>
+
+        {/* Agency */}
+        <div className="bg-red-100 border border-red-200 rounded-2xl p-6 space-y-2">
+          <h2 className="text-lg font-semibold text-red-700">
+            🏢 Bamboo Coders
+          </h2>
+
+          <p className="text-gray-800">
+            ফোন: <a href="tel:+8801700837307" className="text-red-600">+8801700837307</a>
+          </p>
+
+          <p className="text-gray-800">
+            ইমেইল: <a href="mailto:bamboocodersbd@gimail.com" className="text-red-600">bamboocodersbd@gimail.com</a>
+          </p>
+        </div>
+
+        {/* Footer Note */}
+        <div className="text-center text-sm text-gray-500">
+          *যদি কোনও ভুল তথ্য থাকে বা আপনার কোন পরামর্শ থাকে, অনুগ্রহ করে আমাদের পরামর্শ বক্সে জানান।*
+        </div>
+
       </div>
     </section>
   );

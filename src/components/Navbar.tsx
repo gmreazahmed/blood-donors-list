@@ -8,34 +8,34 @@ export default function Navbar() {
   const { pathname } = useLocation();
 
   const navItems = [
-    { label: "Donor List", path: "/" },
-    { label: "Register Donor", path: "/register" },
-    { label: "Request Blood", path: "/blood-request" },
-    { label: "Site Info", path: "/siteinfo" },
+    { label: "Donors", path: "/" },
+    { label: "Register", path: "/register" },
+    { label: "Request", path: "/blood-request" },
+    { label: "Info", path: "/siteinfo" },
   ];
 
   return (
-    <nav className="bg-gradient-to-r from-red-600 to-red-900 text-white shadow-lg fixed w-full z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+    <nav className="fixed w-full z-50 backdrop-blur-md bg-white/70 border-b border-gray-200 shadow-sm">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+
         {/* Logo */}
         <Link
           to="/"
-          className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent 
-          text-2xl font-bold tracking-wide hover:scale-105 transition-transform"
+          className="text-xl font-bold text-red-600 hover:scale-105 transition"
         >
-          Rokto Data
+          🩸 RoktoData
         </Link>
 
         {/* Mobile Button */}
         <button
-          className="md:hidden focus:outline-none rounded"
+          className="md:hidden text-gray-800"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={28} /> : <Menu size={28} />}
+          {open ? <X size={26} /> : <Menu size={26} />}
         </button>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-4 text-sm font-semibold">
+        <ul className="hidden md:flex gap-2 text-sm font-medium">
           {navItems.map((item) => (
             <NavItem
               key={item.path}
@@ -52,13 +52,12 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-red-700 shadow-lg"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden bg-white border-t shadow-md"
           >
-            <ul className="flex flex-col space-y-2 px-4 py-4 text-base">
+            <ul className="flex flex-col px-4 py-4 gap-2">
               {navItems.map((item) => (
                 <NavItem
                   key={item.path}
@@ -91,19 +90,20 @@ function NavItem({
   mobile?: boolean;
   onClick?: () => void;
 }) {
-  const baseStyle = `
-    block px-4 py-2 rounded-full transition-all duration-300 cursor-pointer 
-    hover:bg-white/10 hover:shadow-md
-  `;
-
   return (
     <li>
       <Link
         to={to}
         onClick={onClick}
-        className={`${baseStyle} ${mobile ? "w-full" : ""} ${
-          active ? "bg-white/20 font-bold" : ""
-        }`}
+        className={`
+          px-4 py-2 rounded-full transition-all duration-300
+          ${mobile ? "w-full block" : ""}
+          ${
+            active
+              ? "bg-red-500 text-white shadow"
+              : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+          }
+        `}
       >
         {children}
       </Link>

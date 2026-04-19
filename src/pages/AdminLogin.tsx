@@ -1,4 +1,4 @@
-import { useState } from "react"; 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
@@ -10,7 +10,7 @@ export default function AdminLogin() {
     const plainPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
     if (!plainPassword) {
-      setError("⚠️ .env ফাইল থেকে পাসওয়ার্ড লোড হয়নি।");
+      setError("⚠️ পাসওয়ার্ড লোড হয়নি");
       return;
     }
 
@@ -18,39 +18,56 @@ export default function AdminLogin() {
       localStorage.setItem("isAdmin", "true");
       navigate("/admin");
     } else {
-      setError("❌ ভুল পাসওয়ার্ড!");
+      setError("❌ ভুল পাসওয়ার্ড");
     }
   };
 
   return (
-    <div className="mt-20 flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Admin Login
-        </h2>
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-red-100 px-4">
 
-        <input
-          type="password"
-          className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-600 transition"
-          placeholder="Admin পাসওয়ার্ড লিখুন"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-        />
+      <div className="w-full max-w-md">
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold mt-5 py-3 rounded-md shadow transition"
-        >
-          লগইন করুন
-        </button>
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
 
-        {error && (
-          <p className="mt-4 text-center text-red-600 font-medium select-none">
-            {error}
-          </p>
-        )}
+          {/* Header */}
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-red-600">
+              🔐 Admin Login
+            </h2>
+            <p className="text-gray-500 text-sm mt-1">
+              শুধুমাত্র অনুমোদিত ব্যবহারকারীদের জন্য
+            </p>
+          </div>
+
+          {/* Input */}
+          <input
+            type="password"
+            placeholder="পাসওয়ার্ড লিখুন"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+            className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-red-400 outline-none"
+          />
+
+          {/* Button */}
+          <button
+            onClick={handleLogin}
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg mt-4 font-medium transition"
+          >
+            লগইন করুন
+          </button>
+
+          {/* Error */}
+          {error && (
+            <p className="mt-4 text-center text-red-600 text-sm">
+              {error}
+            </p>
+          )}
+
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 }

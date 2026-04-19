@@ -102,134 +102,144 @@ export default function BloodRequestPage() {
     }
   };
 
-  return (
-    <section className="bg-red-50">
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 min-h-screen">
-        <h2 className="text-xl font-bold text-center text-red-600 mb-8">
-          রক্তের অনুরোধসমূহ
-        </h2>
+ return (
+  <section className="min-h-screen bg-gradient-to-b from-red-50 via-white to-red-50 py-10">
+    <div className="max-w-5xl mx-auto px-4">
 
-        {/* Request List */}
-        <div className="space-y-6 mb-12">
-          {requests.length === 0 && (
-            <p className="text-center text-gray-500">
-              কোনো রক্তের অনুরোধ পাওয়া যায়নি।
-            </p>
-          )}
-          {requests.map((req) => (
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl sm:text-4xl font-bold text-red-600">
+          Blood Request
+        </h2>
+        <p className="text-gray-500 mt-2">
+          জরুরি রক্তের জন্য অনুরোধ করুন অথবা অন্যদের সাহায্য করুন
+        </p>
+      </div>
+
+      {/* Request List */}
+      <div className="space-y-5 mb-12">
+        {requests.length === 0 ? (
+          <p className="text-center text-gray-400">
+            😔 কোনো রক্তের অনুরোধ পাওয়া যায়নি
+          </p>
+        ) : (
+          requests.map((req) => (
             <div
               key={req.id}
-              className="bg-red-30 rounded-xl shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col md:flex-row justify-between gap-4"
             >
-              <div className="space-y-1">
+              <div className="space-y-2 text-sm">
                 <h3 className="text-lg font-semibold text-red-600">
                   {req.name}
                 </h3>
-                <p className="text-sm text-gray-700">
+
+                <p>
                   📞{" "}
                   <a
                     href={`tel:${req.phone}`}
-                    className="text-blue-600 hover:underline font-medium"
+                    className="text-blue-600 hover:underline"
                   >
                     {req.phone}
                   </a>
                 </p>
-                <p className="text-sm text-gray-700">
-                  🩸 <span className="font-medium">গ্রুপ:</span>{" "}
-                  {req.bloodGroup}
-                </p>
-                <p className="text-sm text-gray-700">
-                  🏥 <span className="font-medium">হাসপাতাল:</span>{" "}
-                  {req.hospital}
-                </p>
-                <p className="text-sm text-gray-700">
-                  📝 <span className="font-medium">কারণ:</span> {req.reason}
-                </p>
+
+                <p>🩸 <b>{req.bloodGroup}</b></p>
+                <p>🏥 {req.hospital}</p>
+                <p className="text-gray-600">📝 {req.reason}</p>
               </div>
-              <div>
+
+              <div className="flex items-center">
                 {!req.fulfilled ? (
                   <button
                     onClick={() => handleSolve(req.id)}
-                    className="px-5 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition"
+                    className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg text-sm shadow transition"
                   >
-                    Solve
+                    ✔ Solve
                   </button>
                 ) : (
-                  <span className="px-4 py-2 rounded-md text-xs bg-gray-100 text-gray-600 border border-gray-300">
+                  <span className="text-xs bg-gray-100 px-4 py-2 rounded-lg text-gray-600">
                     Fulfilled
                   </span>
                 )}
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Request Form */}
-        <div className="bg-red-30 rounded-xl shadow-md p-6 sm:p-8">
-          <h3 className="text-xl font-semibold text-center text-red-600 mb-6">
-            নতুন রক্তের অনুরোধ পাঠান
-          </h3>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="আপনার নাম"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
-            <input
-              type="tel"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="ফোন নম্বর"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
-            <select
-              name="bloodGroup"
-              value={form.bloodGroup}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              required
-            >
-              <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
-              {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-                <option key={bg} value={bg}>
-                  {bg}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              name="hospital"
-              value={form.hospital}
-              onChange={handleChange}
-              placeholder="হাসপাতাল/ক্লিনিক"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              required
-            />
-            <textarea
-              name="reason"
-              value={form.reason}
-              onChange={handleChange}
-              placeholder="রোগীর সমস্যা / প্রয়োজন"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              rows={3}
-              required
-            ></textarea>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-red-700 hover:bg-red-600 text-white py-2 rounded-md font-semibold transition"
-            >
-              {loading ? "অনুরোধ প্রেরণ হচ্ছে..." : "অনুরোধ পাঠান"}
-            </button>
-          </form>
-        </div>
+          ))
+        )}
       </div>
-    </section>
-  );
+
+      {/* Form */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-100">
+        <h3 className="text-xl font-semibold text-center text-red-600 mb-6">
+          নতুন রক্তের অনুরোধ পাঠান
+        </h3>
+
+        <form onSubmit={handleSubmit} className="grid gap-4">
+
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="নাম"
+            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
+            required
+          />
+
+          <input
+            type="tel"
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="ফোন নম্বর"
+            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
+            required
+          />
+
+          <select
+            name="bloodGroup"
+            value={form.bloodGroup}
+            onChange={handleChange}
+            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
+            required
+          >
+            <option value="">রক্তের গ্রুপ</option>
+            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
+              <option key={bg}>{bg}</option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            name="hospital"
+            value={form.hospital}
+            onChange={handleChange}
+            placeholder="হাসপাতাল"
+            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
+            required
+          />
+
+          <textarea
+            name="reason"
+            value={form.reason}
+            onChange={handleChange}
+            placeholder="সমস্যা / প্রয়োজন"
+            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
+            rows={3}
+            required
+          ></textarea>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-medium transition"
+          >
+            {loading ? "Sending..." : "অনুরোধ পাঠান"}
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+);
 }
