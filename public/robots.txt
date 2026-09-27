@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.roktodata.online/sitemap.xml
+
+Sitemap: https://roktodata.vercel.app/sitemap.xml
