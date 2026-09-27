@@ -8,5 +8,5 @@ export type Donor = {
   union: string;
   village: string;
   phone: string;
-  lastDonateDate?: string | Timestamp; // Firebase Timestamp বা string
+  lastDonateDate?: string | Timestamp;
 };

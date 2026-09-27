@@ -6,219 +6,617 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import {
+  CalendarDays,
+  CheckCircle2,
+  Heart,
+  Loader2,
+  MapPin,
+  Phone,
+  UserRound,
+} from "lucide-react";
+
 import { areaData } from "../data/upazila-union";
 import { db } from "../firebase/config";
 
+const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+const initialForm = {
+  name: "",
+  bloodGroup: "",
+  upazila: "",
+  union: "",
+  village: "",
+  phone: "",
+  lastDonateDate: "",
+};
+
 export default function DonorRegister() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    name: "",
-    bloodGroup: "",
-    upazila: "",
-    union: "",
-    village: "",
-    phone: "",
-    lastDonateDate: "",
-  });
+
+  const [form, setForm] = useState(initialForm);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === "upazila" ? { union: "" } : {}),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // ✅ Required fields check
+    if (loading) return;
+
+    const name = form.name.trim();
+    const phone = form.phone.trim();
+
+    /* =========================
+       Required fields
+    ========================== */
+
     if (
-      !form.name ||
+      !name ||
       !form.bloodGroup ||
       !form.upazila ||
       !form.union ||
-      !form.phone
+      !phone
     ) {
       alert("অনুগ্রহ করে সব প্রয়োজনীয় ঘর পূরণ করুন।");
       return;
     }
 
-    // ✅ Phone validation
-    const phoneRegex = /^01[0-9]{9}$/;
-    if (!phoneRegex.test(form.phone)) {
-      alert("⚠️ অনুগ্রহ করে সঠিক ফোন নাম্বার লিখুন (01XXXXXXXXX)");
+    /* =========================
+       Name validation
+    ========================== */
+
+    if (name.length < 2) {
+      alert("অনুগ্রহ করে সঠিক নাম লিখুন।");
       return;
     }
 
-    // ✅ Check if phone already exists
+    /* =========================
+       Bangladesh phone validation
+    ========================== */
+
+    const phoneRegex = /^01[0-9]{9}$/;
+
+    if (!phoneRegex.test(phone)) {
+      alert("⚠️ সঠিক ফোন নম্বর লিখুন। উদাহরণ: 01XXXXXXXXX");
+      return;
+    }
+
+    /* =========================
+       Date validation
+    ========================== */
+
+    if (form.lastDonateDate) {
+      const selectedDate = new Date(`${form.lastDonateDate}T00:00:00`);
+      const today = new Date();
+
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate > today) {
+        alert("শেষ রক্তদানের তারিখ ভবিষ্যতের হতে পারে না।");
+        return;
+      }
+    }
+
+    setLoading(true);
+
     try {
+      /* =========================
+         Duplicate phone check
+      ========================== */
+
       const donorsRef = collection(db, "donors");
-      const q = query(donorsRef, where("phone", "==", form.phone));
+
+      const q = query(
+        donorsRef,
+        where("phone", "==", phone)
+      );
+
       const snap = await getDocs(q);
 
       if (!snap.empty) {
-        alert("⚠️ এই ফোন নাম্বার দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা হয়েছে!");
+        alert(
+          "⚠️ এই ফোন নম্বর দিয়ে ইতিমধ্যে একজন ডোনার রেজিস্ট্রেশন করেছেন।"
+        );
+        setLoading(false);
         return;
       }
-    } catch (err) {
-      console.error("Error checking phone duplicate:", err);
-      alert("দুঃখিত, ফোন চেক করতে সমস্যা হয়েছে।");
-      return;
-    }
 
-    // ✅ Confirm phone
-    const isConfirmed = window.confirm(
-      `আপনি কি এই ফোন নাম্বারটি নিশ্চিত করছেন? ${form.phone}`
-    );
-    if (!isConfirmed) return;
+      /* =========================
+         Final confirmation
+      ========================== */
 
-    // ✅ Add donor
-    try {
-      await addDoc(collection(db, "donors"), {
-        ...form,
+      const isConfirmed = window.confirm(
+        `আপনার তথ্য রেজিস্টার করা হবে।\n\nনাম: ${name}\nফোন: ${phone}\nরক্তের গ্রুপ: ${form.bloodGroup}\n\nআপনি কি নিশ্চিত?`
+      );
+
+      if (!isConfirmed) {
+        setLoading(false);
+        return;
+      }
+
+      /* =========================
+         Create donor
+      ========================== */
+
+      await addDoc(donorsRef, {
+        name,
+        bloodGroup: form.bloodGroup,
+        upazila: form.upazila,
+        union: form.union,
+        village: form.village.trim(),
+        phone,
+        lastDonateDate: form.lastDonateDate,
         createdAt: Timestamp.now(),
       });
 
-      setForm({
-        name: "",
-        bloodGroup: "",
-        upazila: "",
-        union: "",
-        village: "",
-        phone: "",
-        lastDonateDate: "",
-      });
-
+      setForm(initialForm);
       setSuccess(true);
-      navigate("/");
-      setTimeout(() => setSuccess(false), 3000);
+      setLoading(false);
+
+      /*
+       * Give the user a moment to see
+       * the success state before navigating.
+       */
+      setTimeout(() => {
+        navigate("/donors");
+      }, 1800);
     } catch (error) {
       console.error("Error adding donor:", error);
-      alert("দুঃখিত, ডোনর সংযুক্ত করতে সমস্যা হয়েছে।");
+
+      setLoading(false);
+
+      alert(
+        "দুঃখিত, রেজিস্ট্রেশন সম্পন্ন করা যায়নি। কিছুক্ষণ পর আবার চেষ্টা করুন।"
+      );
     }
   };
 
   return (
-  <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-red-100 p-6">
-    <div className="w-full max-w-2xl">
+    <>
+      <Helmet>
+        <title>রক্তদাতা হিসেবে নিবন্ধন করুন | RoktoData</title>
 
-      {/* Card */}
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+        <meta
+          name="description"
+          content="RoktoData-তে রক্তদাতা হিসেবে নিবন্ধন করুন। আপনার রক্তের গ্রুপ ও প্রয়োজনীয় তথ্য দিয়ে কালীগঞ্জের রক্তদাতা তালিকায় যুক্ত হন।"
+        />
 
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-red-600">
-            🩸 Donor Registration
-          </h2>
-          <p className="text-gray-500 text-sm mt-2">
-            রক্তদাতা হিসেবে যুক্ত হয়ে একটি জীবন বাঁচাতে সাহায্য করুন
+        <meta
+          name="keywords"
+          content="রক্তদাতা নিবন্ধন, blood donor registration, donor registration Kaliganj, রক্তদাতা কালীগঞ্জ, RoktoData"
+        />
+
+        <link
+          rel="canonical"
+          href="https://roktodata.vercel.app/register"
+        />
+
+        <meta
+          property="og:title"
+          content="রক্তদাতা হিসেবে নিবন্ধন করুন | RoktoData"
+        />
+
+        <meta
+          property="og:description"
+          content="রক্তদাতা হিসেবে RoktoData-তে নিবন্ধন করুন এবং জরুরি সময়ে একজন মানুষের পাশে দাঁড়ানোর সুযোগ তৈরি করুন।"
+        />
+
+        <meta
+          property="og:url"
+          content="https://roktodata.vercel.app/register"
+        />
+      </Helmet>
+
+      <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-red-50 via-white to-red-100/70 px-4 py-10 sm:px-6 lg:py-16">
+
+        {/* Background decoration */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-red-200/30 blur-3xl"
+        />
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-red-300/20 blur-3xl"
+        />
+
+        <div className="relative mx-auto max-w-3xl">
+
+          {/* =========================
+              Header
+          ========================== */}
+
+          <div className="mb-8 text-center">
+
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-600 text-white shadow-xl shadow-red-200">
+              <Heart
+                className="h-8 w-8 fill-current"
+                strokeWidth={1.8}
+              />
+            </div>
+
+            <p className="mb-2 text-sm font-bold uppercase tracking-wider text-red-600">
+              Become a Blood Donor
+            </p>
+
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              রক্তদাতা হিসেবে নিবন্ধন করুন
+            </h1>
+
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-gray-600 sm:text-base">
+              আপনার সামান্য সহযোগিতা জরুরি সময়ে একজন মানুষের জন্য
+              গুরুত্বপূর্ণ হয়ে উঠতে পারে। প্রয়োজনীয় তথ্য দিয়ে RoktoData-তে
+              রক্তদাতা হিসেবে যুক্ত হোন।
+            </p>
+          </div>
+
+          {/* =========================
+              Form Card
+          ========================== */}
+
+          <div className="rounded-3xl border border-gray-100 bg-white p-5 shadow-2xl shadow-red-100/60 sm:p-8">
+
+            {/* Success */}
+            {success && (
+              <div
+                role="status"
+                className="mb-6 flex items-start gap-3 rounded-2xl border border-green-200 bg-green-50 p-4 text-green-700"
+              >
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
+
+                <div>
+                  <p className="font-bold">
+                    সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে!
+                  </p>
+
+                  <p className="mt-1 text-sm">
+                    আপনাকে রক্তদাতা তালিকায় যুক্ত করা হয়েছে। Donor list-এ
+                    নিয়ে যাওয়া হচ্ছে...
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
+
+              {/* =========================
+                  Personal Information
+              ========================== */}
+
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600">
+                    <UserRound className="h-5 w-5" />
+                  </div>
+
+                  <div>
+                    <h2 className="font-bold text-gray-900">
+                      ব্যক্তিগত তথ্য
+                    </h2>
+
+                    <p className="text-xs text-gray-500">
+                      আপনার প্রয়োজনীয় তথ্য দিন
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+
+                  {/* Name */}
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      পূর্ণ নাম <span className="text-red-500">*</span>
+                    </label>
+
+                    <input
+                      id="name"
+                      type="text"
+                      name="name"
+                      placeholder="আপনার পূর্ণ নাম"
+                      value={form.name}
+                      onChange={handleChange}
+                      maxLength={100}
+                      autoComplete="name"
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                      required
+                    />
+                  </div>
+
+                  {/* Blood Group */}
+                  <div>
+                    <label
+                      htmlFor="bloodGroup"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      রক্তের গ্রুপ <span className="text-red-500">*</span>
+                    </label>
+
+                    <select
+                      id="bloodGroup"
+                      name="bloodGroup"
+                      value={form.bloodGroup}
+                      onChange={handleChange}
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                      required
+                    >
+                      <option value="">
+                        রক্তের গ্রুপ নির্বাচন করুন
+                      </option>
+
+                      {BLOOD_GROUPS.map((bg) => (
+                        <option key={bg} value={bg}>
+                          {bg}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      ফোন নম্বর <span className="text-red-500">*</span>
+                    </label>
+
+                    <div className="relative">
+                      <Phone className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+                      <input
+                        id="phone"
+                        type="tel"
+                        name="phone"
+                        inputMode="numeric"
+                        placeholder="01XXXXXXXXX"
+                        value={form.phone}
+                        onChange={handleChange}
+                        maxLength={11}
+                        autoComplete="tel"
+                        className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-gray-100" />
+
+              {/* =========================
+                  Location
+              ========================== */}
+
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600">
+                    <MapPin className="h-5 w-5" />
+                  </div>
+
+                  <div>
+                    <h2 className="font-bold text-gray-900">
+                      অবস্থানের তথ্য
+                    </h2>
+
+                    <p className="text-xs text-gray-500">
+                      আপনার এলাকার তথ্য নির্বাচন করুন
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+
+                  {/* Upazila */}
+                  <div>
+                    <label
+                      htmlFor="upazila"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      উপজেলা <span className="text-red-500">*</span>
+                    </label>
+
+                    <select
+                      id="upazila"
+                      name="upazila"
+                      value={form.upazila}
+                      onChange={handleChange}
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                      required
+                    >
+                      <option value="">
+                        উপজেলা নির্বাচন করুন
+                      </option>
+
+                      {Object.keys(areaData).map((area) => (
+                        <option key={area} value={area}>
+                          {area}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Union */}
+                  <div>
+                    <label
+                      htmlFor="union"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      ইউনিয়ন <span className="text-red-500">*</span>
+                    </label>
+
+                    <select
+                      id="union"
+                      name="union"
+                      value={form.union}
+                      onChange={handleChange}
+                      disabled={!form.upazila}
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                      required
+                    >
+                      <option value="">
+                        {form.upazila
+                          ? "ইউনিয়ন নির্বাচন করুন"
+                          : "আগে উপজেলা নির্বাচন করুন"}
+                      </option>
+
+                      {form.upazila &&
+                        areaData[form.upazila]?.map((u) => (
+                          <option key={u} value={u}>
+                            {u}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+
+                  {/* Village */}
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="village"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
+                      গ্রাম{" "}
+                      <span className="font-normal text-gray-400">
+                        (ঐচ্ছিক)
+                      </span>
+                    </label>
+
+                    <input
+                      id="village"
+                      type="text"
+                      name="village"
+                      placeholder="আপনার গ্রামের নাম"
+                      value={form.village}
+                      onChange={handleChange}
+                      maxLength={150}
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-gray-100" />
+
+              {/* =========================
+                  Donation Information
+              ========================== */}
+
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600">
+                    <CalendarDays className="h-5 w-5" />
+                  </div>
+
+                  <div>
+                    <h2 className="font-bold text-gray-900">
+                      রক্তদানের তথ্য
+                    </h2>
+
+                    <p className="text-xs text-gray-500">
+                      সর্বশেষ রক্তদানের তথ্য থাকলে দিন
+                    </p>
+                  </div>
+                </div>
+
+                <label
+                  htmlFor="lastDonateDate"
+                  className="mb-2 block text-sm font-semibold text-gray-700"
+                >
+                  সর্বশেষ রক্তদানের তারিখ{" "}
+                  <span className="font-normal text-gray-400">
+                    (ঐচ্ছিক)
+                  </span>
+                </label>
+
+                <input
+                  id="lastDonateDate"
+                  type="date"
+                  name="lastDonateDate"
+                  value={form.lastDonateDate}
+                  onChange={handleChange}
+                  max={new Date().toISOString().split("T")[0]}
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                />
+
+                <p className="mt-2 text-xs leading-5 text-gray-500">
+                  এই তথ্যটি ডোনারের সম্ভাব্য availability দেখাতে সহায়তা
+                  করতে পারে। এটি কোনো চিকিৎসাগত eligibility নিশ্চিত করে না।
+                </p>
+              </div>
+
+              {/* =========================
+                  Privacy Notice
+              ========================== */}
+
+              <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4">
+                <p className="text-xs leading-6 text-amber-800">
+                  <strong>গুরুত্বপূর্ণ:</strong> আপনার দেওয়া তথ্য রক্তদাতা
+                  তালিকায় প্রদর্শিত হতে পারে এবং প্রয়োজনের সময় যোগাযোগের
+                  জন্য ফোন নম্বর ব্যবহার করা হতে পারে। শুধুমাত্র স্বেচ্ছায়
+                  ও সম্মত হয়ে নিবন্ধন করুন।
+                </p>
+              </div>
+
+              {/* =========================
+                  Submit
+              ========================== */}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-200 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    রেজিস্ট্রেশন হচ্ছে...
+                  </>
+                ) : (
+                  <>
+                    <Heart className="h-5 w-5" />
+                    রক্তদাতা হিসেবে নিবন্ধন করুন
+                  </>
+                )}
+              </button>
+
+            </form>
+
+            {/* Bottom note */}
+            <div className="mt-6 flex items-center justify-center gap-2 text-center text-xs text-gray-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+              বর্তমানে কালীগঞ্জ এলাকার জন্য এই সেবা চালু রয়েছে
+            </div>
+          </div>
+
+          {/* Bottom SEO / trust text */}
+          <p className="mx-auto mt-6 max-w-2xl text-center text-xs leading-6 text-gray-500">
+            RoktoData-এর মাধ্যমে রক্তদাতা হিসেবে যুক্ত হয়ে জরুরি সময়ে
+            রক্তের প্রয়োজন থাকা মানুষের কাছে পৌঁছাতে সাহায্য করুন।
           </p>
         </div>
-
-        {success && (
-          <div className="mb-4 text-center bg-green-100 text-green-700 py-2 rounded-lg">
-            ✅ সফলভাবে রেজিস্ট্রেশন সম্পন্ন হয়েছে
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="grid gap-4">
-
-          <input
-            type="text"
-            name="name"
-            placeholder="পূর্ণ নাম"
-            value={form.name}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-            required
-          />
-
-          <select
-            name="bloodGroup"
-            value={form.bloodGroup}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-            required
-          >
-            <option value="">রক্তের গ্রুপ</option>
-            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-              <option key={bg}>{bg}</option>
-            ))}
-          </select>
-
-          <select
-            name="upazila"
-            value={form.upazila}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-            required
-          >
-            <option value="">উপজেলা</option>
-            {Object.keys(areaData).map((area) => (
-              <option key={area}>{area}</option>
-            ))}
-          </select>
-
-          {form.upazila && (
-            <select
-              name="union"
-              value={form.union}
-              onChange={handleChange}
-              className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-              required
-            >
-              <option value="">ইউনিয়ন</option>
-              {areaData[form.upazila].map((u) => (
-                <option key={u}>{u}</option>
-              ))}
-            </select>
-          )}
-
-          <input
-            type="text"
-            name="village"
-            placeholder="গ্রাম"
-            value={form.village}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-          />
-
-          <input
-            type="tel"
-            name="phone"
-            placeholder="ফোন নম্বর (01XXXXXXXXX)"
-            value={form.phone}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-            required
-          />
-
-          <input
-            type="date"
-            name="lastDonateDate"
-            value={form.lastDonateDate}
-            onChange={handleChange}
-            className="border px-4 py-2 rounded-lg focus:ring-2 focus:ring-red-400"
-          />
-
-          <button
-            type="submit"
-            className="bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-medium transition"
-          >
-            নিবন্ধন করুন
-          </button>
-
-        </form>
-
-        <p className="text-center text-xs text-gray-500 mt-6">
-          বর্তমানে শুধু কালিগঞ্জ উপজেলার জন্য চালু আছে
-        </p>
-
-      </div>
-    </div>
-  </section>
-);
+      </main>
+    </>
+  );
 }
