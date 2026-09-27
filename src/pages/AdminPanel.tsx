@@ -6,13 +6,17 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   Check,
-  ChevronDown,
   Edit3,
   Heart,
   LayoutDashboard,
