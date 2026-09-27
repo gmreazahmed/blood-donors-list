@@ -1,6 +1,11 @@
-import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
+import {
+  collection,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { ChevronDown, Search} from "lucide-react";
 
 import DonorCard from "../components/DonorCard";
 import RegBtn from "../components/RegBtn";
@@ -18,7 +23,16 @@ type Donor = {
   lastDonateDate?: string | Timestamp;
 };
 
-const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const bloodGroups = [
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+  "O+",
+  "O-",
+];
 
 const upazilas = Object.keys(areaData);
 
@@ -64,12 +78,16 @@ export default function DonorsList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Floating blood-group button state
+  const [showFloatingBlood, setShowFloatingBlood] =
+    useState(false);
+
+  const [bloodPopupOpen, setBloodPopupOpen] = useState(false);
+
+  const bloodFilterRef = useRef<HTMLDivElement | null>(null);
+
   /*
    * Fetch donor data once.
-   *
-   * Previously Firestore was queried every time a filter/search
-   * changed. For a local donor directory this avoids unnecessary
-   * repeated reads and makes filtering much faster.
    */
   useEffect(() => {
     let mounted = true;
@@ -79,7 +97,9 @@ export default function DonorsList() {
         setLoading(true);
         setError("");
 
-        const snap = await getDocs(collection(db, "donors"));
+        const snap = await getDocs(
+          collection(db, "donors")
+        );
 
         if (!mounted) return;
 
@@ -112,10 +132,74 @@ export default function DonorsList() {
   }, []);
 
   /*
+   * Show floating blood-group button only after
+   * the original blood-group filter scrolls out of view.
+   */
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!bloodFilterRef.current) return;
+
+      const rect =
+        bloodFilterRef.current.getBoundingClientRect();
+
+      const shouldShow = rect.bottom < 82;
+
+      setShowFloatingBlood(shouldShow);
+
+      if (!shouldShow) {
+        setBloodPopupOpen(false);
+      }
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  /*
+   * Close floating popup when clicking outside.
+   */
+  useEffect(() => {
+    if (!bloodPopupOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      if (
+        !target.closest("[data-blood-floating]")
+      ) {
+        setBloodPopupOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handlePointerDown
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handlePointerDown
+      );
+    };
+  }, [bloodPopupOpen]);
+
+  /*
    * Client-side filtering.
    */
   const filteredDonors = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
+    const normalizedSearch =
+      search.trim().toLowerCase();
 
     return allDonors.filter((donor) => {
       const matchesBlood =
@@ -129,9 +213,15 @@ export default function DonorsList() {
 
       const matchesSearch =
         !normalizedSearch ||
-        donor.name?.toLowerCase().includes(normalizedSearch) ||
-        donor.phone?.toLowerCase().includes(normalizedSearch) ||
-        donor.village?.toLowerCase().includes(normalizedSearch);
+        donor.name
+          ?.toLowerCase()
+          .includes(normalizedSearch) ||
+        donor.phone
+          ?.toLowerCase()
+          .includes(normalizedSearch) ||
+        donor.village
+          ?.toLowerCase()
+          .includes(normalizedSearch);
 
       const matchesAvailability =
         !availableOnly || isAvailable(donor);
@@ -153,9 +243,13 @@ export default function DonorsList() {
     availableOnly,
   ]);
 
-  const visibleDonors = filteredDonors.slice(0, showCount);
+  const visibleDonors = filteredDonors.slice(
+    0,
+    showCount
+  );
 
-  const hasMore = visibleDonors.length < filteredDonors.length;
+  const hasMore =
+    visibleDonors.length < filteredDonors.length;
 
   const clearFilters = () => {
     setBlood("");
@@ -171,6 +265,12 @@ export default function DonorsList() {
   ) => {
     setBlood(event.target.value);
     setShowCount(12);
+  };
+
+  const selectBloodGroup = (group: string) => {
+    setBlood(group);
+    setShowCount(12);
+    setBloodPopupOpen(false);
   };
 
   const handleUpazilaChange = (
@@ -237,7 +337,10 @@ export default function DonorsList() {
           content="https://roktodata.vercel.app/donors"
         />
 
-        <meta property="og:type" content="website" />
+        <meta
+          property="og:type"
+          content="website"
+        />
 
         <meta
           property="og:image"
@@ -283,10 +386,159 @@ export default function DonorsList() {
         </script>
       </Helmet>
 
+      {/* =================================================
+          FLOATING BLOOD GROUP CONTROL
+      ================================================= */}
+      {showFloatingBlood && (
+        <div
+          data-blood-floating
+          className="
+            fixed
+            left-1/2
+            top-[78px]
+            z-40
+            -translate-x-1/2
+            sm:left-auto
+            sm:right-5
+            sm:translate-x-0
+          "
+        >
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() =>
+                setBloodPopupOpen((previous) => !previous)
+              }
+              aria-expanded={bloodPopupOpen}
+              aria-haspopup="listbox"
+              className="
+                flex h-10
+                items-center gap-2
+                rounded-full
+                border border-red-100
+                bg-white
+                px-3.5
+                text-xs font-extrabold
+                text-slate-800
+                shadow-[0_8px_25px_rgba(15,23,42,0.12)]
+                backdrop-blur-md
+                transition-all
+                hover:border-red-200
+                hover:shadow-[0_10px_30px_rgba(185,28,28,0.15)]
+                focus:outline-none
+                focus:ring-2
+                focus:ring-red-400
+                focus:ring-offset-2
+              "
+            >
+              <span
+                className="
+                  flex h-6 w-6
+                  items-center justify-center
+                  rounded-full
+                  bg-red-50
+                  text-[10px] font-black
+                  text-red-600
+                "
+              >
+                🩸
+              </span>
+
+              <span>
+                {blood || "সব গ্রুপ"}
+              </span>
+
+              <ChevronDown
+                className={`
+                  h-4 w-4 text-slate-400
+                  transition-transform
+                  ${bloodPopupOpen ? "rotate-180" : ""}
+                `}
+              />
+            </button>
+
+            {/* Popup */}
+            {bloodPopupOpen && (
+              <div
+                data-blood-floating
+                className="
+                  absolute
+                  right-0
+                  top-[calc(100%+8px)]
+                  w-[220px]
+                  overflow-hidden
+                  rounded-2xl
+                  border border-slate-200
+                  bg-white
+                  p-2
+                  shadow-[0_18px_45px_rgba(15,23,42,0.16)]
+                "
+              >
+                <div className="px-2 pb-2 pt-1">
+                  <p className="text-[11px] font-bold text-slate-400">
+                    রক্তের গ্রুপ নির্বাচন করুন
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      selectBloodGroup("")
+                    }
+                    className={`
+                      rounded-xl px-3 py-2.5
+                      text-xs font-bold
+                      transition
+                      ${
+                        blood === ""
+                          ? "bg-red-600 text-white"
+                          : "bg-slate-50 text-slate-700 hover:bg-red-50 hover:text-red-600"
+                      }
+                    `}
+                  >
+                    সব গ্রুপ
+                  </button>
+
+                  {bloodGroups.map((group) => (
+                    <button
+                      key={group}
+                      type="button"
+                      onClick={() =>
+                        selectBloodGroup(group)
+                      }
+                      className={`
+                        rounded-xl px-3 py-2.5
+                        text-xs font-black
+                        transition
+                        ${
+                          blood === group
+                            ? "bg-red-600 text-white"
+                            : "bg-slate-50 text-slate-700 hover:bg-red-50 hover:text-red-600"
+                        }
+                      `}
+                    >
+                      {group}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <section
         id="donor-list"
         aria-labelledby="donor-directory-heading"
-        className="bg-gradient-to-b from-red-50 via-white to-slate-50 py-12 sm:py-16"
+        className="
+          bg-gradient-to-b
+          from-red-50
+          via-white
+          to-slate-50
+          py-12
+          sm:py-16
+        "
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* =========================
@@ -294,17 +546,33 @@ export default function DonorsList() {
           ========================== */}
           <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1.5 text-xs font-bold text-red-700">
+              <div
+                className="
+                  mb-3 inline-flex
+                  items-center gap-2
+                  rounded-full
+                  bg-red-100
+                  px-3 py-1.5
+                  text-xs font-bold
+                  text-red-700
+                "
+              >
                 <span
                   aria-hidden="true"
                   className="h-2 w-2 rounded-full bg-red-600"
                 />
+
                 RoktoData Donor Directory
               </div>
 
               <h2
                 id="donor-directory-heading"
-                className="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl"
+                className="
+                  text-3xl font-black
+                  tracking-tight
+                  text-slate-900
+                  sm:text-4xl
+                "
               >
                 কালীগঞ্জের রক্তদাতা তালিকা
               </h2>
@@ -323,7 +591,18 @@ export default function DonorsList() {
           {/* =========================
               SEARCH & FILTERS
           ========================== */}
-          <div className="mb-10 rounded-3xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-900/5 sm:p-6">
+          <div
+            className="
+              mb-10
+              rounded-3xl
+              border border-slate-200
+              bg-white
+              p-4
+              shadow-xl
+              shadow-slate-900/5
+              sm:p-6
+            "
+          >
             <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-lg font-extrabold text-slate-900">
@@ -343,7 +622,16 @@ export default function DonorsList() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="self-start rounded-lg px-3 py-2 text-xs font-bold text-red-600 transition hover:bg-red-50 sm:self-auto"
+                  className="
+                    self-start
+                    rounded-lg
+                    px-3 py-2
+                    text-xs font-bold
+                    text-red-600
+                    transition
+                    hover:bg-red-50
+                    sm:self-auto
+                  "
                 >
                   সব ফিল্টার মুছে দিন
                 </button>
@@ -361,12 +649,16 @@ export default function DonorsList() {
                 </label>
 
                 <div className="relative">
-                  <span
+                  <Search
                     aria-hidden="true"
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  >
-                    ⌕
-                  </span>
+                    className="
+                      pointer-events-none
+                      absolute left-3 top-1/2
+                      h-4 w-4
+                      -translate-y-1/2
+                      text-slate-400
+                    "
+                  />
 
                   <input
                     id="donor-search"
@@ -374,13 +666,29 @@ export default function DonorsList() {
                     placeholder="নাম, ফোন বা গ্রাম..."
                     value={search}
                     onChange={handleSearchChange}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                    className="
+                      w-full
+                      rounded-xl
+                      border border-slate-200
+                      bg-slate-50
+                      py-3
+                      pl-9 pr-3
+                      text-sm
+                      text-slate-900
+                      outline-none
+                      transition
+                      placeholder:text-slate-400
+                      focus:border-red-400
+                      focus:bg-white
+                      focus:ring-4
+                      focus:ring-red-100
+                    "
                   />
                 </div>
               </div>
 
               {/* Blood Group */}
-              <div>
+              <div ref={bloodFilterRef}>
                 <label
                   htmlFor="blood-group"
                   className="mb-1.5 block text-xs font-bold text-slate-600"
@@ -392,7 +700,21 @@ export default function DonorsList() {
                   id="blood-group"
                   value={blood}
                   onChange={handleBloodChange}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-700 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                  className="
+                    w-full
+                    rounded-xl
+                    border border-slate-200
+                    bg-slate-50
+                    px-3 py-3
+                    text-sm font-medium
+                    text-slate-700
+                    outline-none
+                    transition
+                    focus:border-red-400
+                    focus:bg-white
+                    focus:ring-4
+                    focus:ring-red-100
+                  "
                 >
                   <option value="">সব গ্রুপ</option>
 
@@ -417,7 +739,21 @@ export default function DonorsList() {
                   id="upazila"
                   value={upazila}
                   onChange={handleUpazilaChange}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-700 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
+                  className="
+                    w-full
+                    rounded-xl
+                    border border-slate-200
+                    bg-slate-50
+                    px-3 py-3
+                    text-sm font-medium
+                    text-slate-700
+                    outline-none
+                    transition
+                    focus:border-red-400
+                    focus:bg-white
+                    focus:ring-4
+                    focus:ring-red-100
+                  "
                 >
                   <option value="">সব উপজেলা</option>
 
@@ -443,10 +779,28 @@ export default function DonorsList() {
                   value={union}
                   onChange={handleUnionChange}
                   disabled={!upazila}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-medium text-slate-700 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="
+                    w-full
+                    rounded-xl
+                    border border-slate-200
+                    bg-slate-50
+                    px-3 py-3
+                    text-sm font-medium
+                    text-slate-700
+                    outline-none
+                    transition
+                    focus:border-red-400
+                    focus:bg-white
+                    focus:ring-4
+                    focus:ring-red-100
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                  "
                 >
                   <option value="">
-                    {upazila ? "সব ইউনিয়ন" : "আগে উপজেলা নির্বাচন করুন"}
+                    {upazila
+                      ? "সব ইউনিয়ন"
+                      : "আগে উপজেলা নির্বাচন করুন"}
                   </option>
 
                   {upazila &&
@@ -464,11 +818,23 @@ export default function DonorsList() {
                   type="button"
                   onClick={handleAvailabilityChange}
                   aria-pressed={availableOnly}
-                  className={`min-h-[46px] w-full rounded-xl px-4 py-3 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${
-                    availableOnly
-                      ? "bg-green-600 text-white shadow-lg shadow-green-600/20"
-                      : "border border-slate-200 bg-slate-50 text-slate-700 hover:border-green-200 hover:bg-green-50 hover:text-green-700"
-                  }`}
+                  className={`
+                    min-h-[46px]
+                    w-full
+                    rounded-xl
+                    px-4 py-3
+                    text-sm font-bold
+                    transition
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-red-500
+                    focus:ring-offset-2
+                    ${
+                      availableOnly
+                        ? "bg-green-600 text-white shadow-lg shadow-green-600/20"
+                        : "border border-slate-200 bg-slate-50 text-slate-700 hover:border-green-200 hover:bg-green-50 hover:text-green-700"
+                    }
+                  `}
                 >
                   {availableOnly
                     ? "✓ এখন সম্ভব হতে পারে"
@@ -478,7 +844,19 @@ export default function DonorsList() {
             </div>
 
             {/* Results summary */}
-            <div className="mt-5 flex flex-col gap-2 border-t border-slate-100 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:text-sm">
+            <div
+              className="
+                mt-5
+                flex flex-col gap-2
+                border-t border-slate-100
+                pt-4
+                text-xs text-slate-500
+                sm:flex-row
+                sm:items-center
+                sm:justify-between
+                sm:text-sm
+              "
+            >
               <span>
                 মোট{" "}
                 <strong className="text-slate-900">
@@ -499,13 +877,18 @@ export default function DonorsList() {
             </div>
           </div>
 
-          {/* =========================
-              ERROR
-          ========================== */}
+          {/* Error */}
           {error && (
             <div
               role="alert"
-              className="mb-8 rounded-2xl border border-red-200 bg-red-50 p-5 text-center"
+              className="
+                mb-8
+                rounded-2xl
+                border border-red-200
+                bg-red-50
+                p-5
+                text-center
+              "
             >
               <p className="font-bold text-red-700">
                 তথ্য লোড করা যায়নি
@@ -517,46 +900,73 @@ export default function DonorsList() {
             </div>
           )}
 
-          {/* =========================
-              LOADING
-          ========================== */}
+          {/* Loading */}
           {loading && (
             <div
-              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              className="
+                grid grid-cols-1 gap-5
+                sm:grid-cols-2
+                lg:grid-cols-3
+              "
               aria-label="রক্তদাতাদের তথ্য লোড হচ্ছে"
             >
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="animate-pulse rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="h-14 w-14 rounded-full bg-slate-200" />
+              {Array.from({ length: 6 }).map(
+                (_, index) => (
+                  <div
+                    key={index}
+                    className="
+                      animate-pulse
+                      rounded-2xl
+                      border border-slate-200
+                      bg-white
+                      p-5
+                      shadow-sm
+                    "
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-xl bg-slate-200" />
 
-                    <div className="flex-1">
-                      <div className="h-4 w-32 rounded bg-slate-200" />
-                      <div className="mt-2 h-3 w-24 rounded bg-slate-100" />
+                      <div className="flex-1">
+                        <div className="h-4 w-32 rounded bg-slate-200" />
+                        <div className="mt-2 h-3 w-24 rounded bg-slate-100" />
+                      </div>
+                    </div>
+
+                    <div className="mt-6 space-y-3">
+                      <div className="h-3 w-full rounded bg-slate-100" />
+                      <div className="h-3 w-4/5 rounded bg-slate-100" />
+                      <div className="h-10 w-full rounded-xl bg-slate-100" />
                     </div>
                   </div>
-
-                  <div className="mt-6 space-y-3">
-                    <div className="h-3 w-full rounded bg-slate-100" />
-                    <div className="h-3 w-4/5 rounded bg-slate-100" />
-                    <div className="h-10 w-full rounded-xl bg-slate-100" />
-                  </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           )}
 
-          {/* =========================
-              EMPTY STATE
-          ========================== */}
+          {/* Empty */}
           {!loading &&
             !error &&
             filteredDonors.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center shadow-sm">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-2xl">
+              <div
+                className="
+                  rounded-3xl
+                  border border-dashed
+                  border-slate-300
+                  bg-white
+                  px-6 py-16
+                  text-center
+                  shadow-sm
+                "
+              >
+                <div
+                  className="
+                    mx-auto flex h-16 w-16
+                    items-center justify-center
+                    rounded-full
+                    bg-red-50
+                    text-2xl
+                  "
+                >
                   🩸
                 </div>
 
@@ -565,73 +975,114 @@ export default function DonorsList() {
                 </h3>
 
                 <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-500">
-                  আপনার নির্বাচিত ফিল্টার পরিবর্তন করে আবার চেষ্টা
-                  করুন অথবা সব ফিল্টার মুছে দিন।
+                  আপনার নির্বাচিত ফিল্টার পরিবর্তন করে
+                  আবার চেষ্টা করুন অথবা সব ফিল্টার মুছে দিন।
                 </p>
 
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="mt-6 rounded-xl bg-red-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  className="
+                    mt-6
+                    rounded-xl
+                    bg-red-600
+                    px-6 py-3
+                    text-sm font-bold
+                    text-white
+                    transition
+                    hover:bg-red-700
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-red-500
+                    focus:ring-offset-2
+                  "
                 >
                   সব ফিল্টার মুছে দিন
                 </button>
               </div>
             )}
 
-          {/* =========================
-              DONOR GRID
-          ========================== */}
+          {/* Donor Grid */}
           {!loading &&
             !error &&
             visibleDonors.length > 0 && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div
+                className="
+                  grid grid-cols-1 gap-5
+                  sm:grid-cols-2
+                  lg:grid-cols-3
+                "
+              >
                 {visibleDonors.map((donor) => (
-                  <article
+                  <DonorCard
                     key={donor.id}
-                    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-red-100 hover:shadow-xl"
-                  >
-                    <DonorCard donor={donor} />
-                  </article>
+                    donor={donor}
+                  />
                 ))}
               </div>
             )}
 
-          {/* =========================
-              LOAD MORE
-          ========================== */}
+          {/* Load More */}
           {!loading && hasMore && (
             <div className="mt-10 text-center">
               <button
                 type="button"
                 onClick={() =>
-                  setShowCount((previous) => previous + 12)
+                  setShowCount(
+                    (previous) => previous + 12
+                  )
                 }
-                className="inline-flex min-h-12 items-center justify-center rounded-xl bg-slate-900 px-8 py-3.5 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                className="
+                  inline-flex
+                  min-h-12
+                  items-center
+                  justify-center
+                  rounded-xl
+                  bg-slate-900
+                  px-8 py-3.5
+                  text-sm font-bold
+                  text-white
+                  shadow-lg
+                  transition
+                  hover:-translate-y-0.5
+                  hover:bg-slate-800
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-slate-500
+                  focus:ring-offset-2
+                "
               >
                 আরও ডোনার দেখুন
               </button>
             </div>
           )}
 
-          {/* =========================
-              INFORMATION
-          ========================== */}
-          {!loading && filteredDonors.length > 0 && (
-            <div className="mt-12 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-              <h3 className="text-sm font-extrabold text-amber-900">
-                গুরুত্বপূর্ণ তথ্য
-              </h3>
+          {/* Information */}
+          {!loading &&
+            filteredDonors.length > 0 && (
+              <div
+                className="
+                  mt-12
+                  rounded-2xl
+                  border border-amber-200
+                  bg-amber-50
+                  p-5
+                "
+              >
+                <h3 className="text-sm font-extrabold text-amber-900">
+                  গুরুত্বপূর্ণ তথ্য
+                </h3>
 
-              <p className="mt-2 text-xs leading-6 text-amber-800 sm:text-sm">
-                এখানে দেখানো donor availability তথ্যের ভিত্তিতে
-                অনুমান করা হতে পারে। রক্তদাতার সাথে যোগাযোগ করে
-                বর্তমান availability নিশ্চিত করুন। জরুরি
-                পরিস্থিতিতে নিকটস্থ হাসপাতাল বা ব্লাড ব্যাংকের
-                সাথেও যোগাযোগ করুন।
-              </p>
-            </div>
-          )}
+                <p className="mt-2 text-xs leading-6 text-amber-800 sm:text-sm">
+                  এখানে দেখানো donor availability তথ্যের
+                  ভিত্তিতে অনুমান করা হতে পারে। রক্তদাতার
+                  সাথে যোগাযোগ করে বর্তমান availability
+                  নিশ্চিত করুন। জরুরি পরিস্থিতিতে নিকটস্থ
+                  হাসপাতাল বা ব্লাড ব্যাংকের সাথেও যোগাযোগ
+                  করুন।
+                </p>
+              </div>
+            )}
         </div>
       </section>
     </>
