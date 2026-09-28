@@ -23,7 +23,16 @@ import { areaData } from "../data/upazila-union";
 import { db } from "../firebase/config";
 import type { Donor } from "../types";
 
-const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const BLOOD_GROUPS = [
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+  "O+",
+  "O-",
+];
 
 const initialForm = {
   name: "",
@@ -45,6 +54,10 @@ export default function DonorRegister() {
   const [loading, setLoading] = useState(false);
   const [submittedDonor, setSubmittedDonor] = useState<Donor | null>(null);
 
+  /* =========================
+     Form change
+  ========================== */
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -56,6 +69,30 @@ export default function DonorRegister() {
       ...(name === "upazila" ? { union: "" } : {}),
     }));
   };
+
+  /* =========================
+     Format donation date
+  ========================== */
+
+  const formatDonationDate = (
+    value: Donor["lastDonateDate"]
+  ): string => {
+    if (!value) return "";
+
+    if (typeof value === "string") {
+      return value;
+    }
+
+    return value.toDate().toLocaleDateString("bn-BD", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  /* =========================
+     Submit registration
+  ========================== */
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -106,7 +143,10 @@ export default function DonorRegister() {
     ========================== */
 
     if (form.lastDonateDate) {
-      const selectedDate = new Date(`${form.lastDonateDate}T00:00:00`);
+      const selectedDate = new Date(
+        `${form.lastDonateDate}T00:00:00`
+      );
+
       const today = new Date();
 
       today.setHours(0, 0, 0, 0);
@@ -208,6 +248,10 @@ export default function DonorRegister() {
     }
   };
 
+  /* =========================
+     View registered donor
+  ========================== */
+
   const handleViewDonor = () => {
     if (!submittedDonor) return;
 
@@ -217,6 +261,10 @@ export default function DonorRegister() {
       },
     });
   };
+
+  /* =========================
+     Register another donor
+  ========================== */
 
   const handleRegisterAnother = () => {
     setSubmittedDonor(null);
@@ -270,7 +318,7 @@ export default function DonorRegister() {
         />
       </Helmet>
 
-      <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-red-50 via-white to-red-100/70 px-4 py-10 sm:px-6 lg:py-16">
+      <main className="relative min-h-screen overflow-hidden bg-linear-to-br from-red-50 via-white to-red-100/70 px-4 py-10 sm:px-6 lg:py-16">
         {/* Background decoration */}
 
         <div
@@ -330,6 +378,7 @@ export default function DonorRegister() {
                     <CheckCircle2
                       className="h-10 w-10 text-emerald-600"
                       strokeWidth={2.2}
+                      aria-hidden="true"
                     />
                   </div>
 
@@ -454,7 +503,9 @@ export default function DonorRegister() {
                         </span>
 
                         <span className="text-right text-sm font-semibold text-gray-800">
-                          {submittedDonor.lastDonateDate}
+                          {formatDonationDate(
+                            submittedDonor.lastDonateDate
+                          )}
                         </span>
                       </div>
                     )}
@@ -465,7 +516,10 @@ export default function DonorRegister() {
 
                 <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4">
                   <div className="flex gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                    <CheckCircle2
+                      className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600"
+                      aria-hidden="true"
+                    />
 
                     <p className="text-xs leading-6 text-emerald-800">
                       আপনার তথ্য এখন RoktoData-এর রক্তদাতা তালিকায় যুক্ত হয়েছে।
@@ -487,6 +541,7 @@ export default function DonorRegister() {
                       className="h-4 w-4 fill-current"
                       aria-hidden="true"
                     />
+
                     রক্তদাতা তালিকায় দেখুন
                   </button>
 
