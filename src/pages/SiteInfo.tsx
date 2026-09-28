@@ -269,7 +269,7 @@ export default function SiteInfo() {
 
               <DeveloperCard
                 name="নাসিফ উর রহমান"
-                href="https://www.facebook.com/nasif.rahman.980"
+                href="https://www.facebook.com/itsnasifrahman"
               />
 
               <DeveloperCard
@@ -325,12 +325,12 @@ export default function SiteInfo() {
                 </a>
 
                 <a
-                  href="mailto:bamboocodersbd@gimail.com"
+                  href="mailto:bamboocodersbd@gmail.com"
                   className="flex items-center gap-3 rounded-xl border border-red-100 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm transition hover:border-red-300 hover:text-red-600"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-red-600" />
                   <span className="break-all">
-                    bamboocodersbd@gimail.com
+                    bamboocodersbd@gmail.com
                   </span>
                 </a>
 
