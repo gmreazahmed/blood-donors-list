@@ -8,7 +8,6 @@ import { Helmet } from "react-helmet-async";
 import { ChevronDown, Search} from "lucide-react";
 
 import DonorCard from "../components/DonorCard";
-import RegBtn from "../components/RegBtn";
 import { areaData } from "../data/upazila-union";
 import { db } from "../firebase/config";
 
@@ -583,9 +582,6 @@ export default function DonorsList() {
               </p>
             </div>
 
-            <div className="shrink-0">
-              <RegBtn />
-            </div>
           </div>
 
           {/* =========================
