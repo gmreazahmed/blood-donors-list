@@ -11,6 +11,7 @@ import DonorRegister from "./pages/DonorRegister";
 import DonorsList from "./pages/DonorsList";
 import Home from "./pages/Home";
 import SiteInfo from "./pages/SiteInfo";
+import BloodDonorListKaliganj from "./pages/blog/BloodDonorListKaliganj";
 
 /**
  * Scroll to the top whenever the route changes.
@@ -64,7 +65,10 @@ function App() {
 
       <main id="main-content" className="flex-grow">
         <Routes>
-          {/* Public pages */}
+          {/* =========================
+              Public Pages
+          ========================== */}
+
           <Route path="/" element={<Home />} />
 
           <Route path="/donors" element={<DonorsList />} />
@@ -75,12 +79,27 @@ function App() {
 
           <Route path="/siteinfo" element={<SiteInfo />} />
 
-          {/* Admin pages */}
+          {/* =========================
+              SEO Blog
+          ========================== */}
+
+          <Route
+            path="/blog/blood-donor-list-kaliganj"
+            element={<BloodDonorListKaliganj />}
+          />
+
+          {/* =========================
+              Admin Pages
+          ========================== */}
+
           <Route path="/admin-login" element={<AdminLogin />} />
 
           <Route path="/admin" element={<AdminPanel />} />
 
-          {/* Unknown route */}
+          {/* =========================
+              Fallback
+          ========================== */}
+
           <Route path="*" element={<Home />} />
         </Routes>
       </main>

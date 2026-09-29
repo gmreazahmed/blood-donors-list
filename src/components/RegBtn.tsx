@@ -119,7 +119,7 @@ export default function RegBtn() {
           </span>
 
           <span className="whitespace-nowrap">
-            রক্তদাতা হিসেবে নিবন্ধন করুন
+            রক্তদাতা হিসেবে যুক্ত হন
           </span>
 
           <Heart
