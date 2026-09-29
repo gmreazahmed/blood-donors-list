@@ -12,6 +12,7 @@ import DonorsList from "./pages/DonorsList";
 import Home from "./pages/Home";
 import SiteInfo from "./pages/SiteInfo";
 import BloodDonorListKaliganj from "./pages/blog/BloodDonorListKaliganj";
+import RegBtn from "./components/RegBtn";
 
 /**
  * Scroll to the top whenever the route changes.
@@ -103,7 +104,7 @@ function App() {
           <Route path="*" element={<Home />} />
         </Routes>
       </main>
-
+       <RegBtn />     
       <Footer />
     </div>
   );
